@@ -33,3 +33,23 @@ A Ordem de Serviço poderá assumir os seguintes estados:
 - Em execução;
 - Finalizada;
 - Entregue.
+
+## RN007 - Reserva de estoque
+
+Após a aprovação do orçamento, as peças e insumos necessários
+deverão ser reservados, desde que exista quantidade disponível.
+
+## RN008 - Disponibilidade para reserva
+
+Não será permitida a reserva de uma quantidade superior à
+quantidade disponível do item.
+
+## RN009 - Consumo de estoque
+
+O estoque físico deverá ser reduzido quando uma peça ou insumo
+reservado for efetivamente consumido pela Ordem de Serviço.
+
+## RN010 - Quantidade de estoque
+
+As quantidades física e reservada de um item de estoque não
+poderão assumir valores negativos.

@@ -85,3 +85,24 @@ Os estados definidos são:
 - Em execução;
 - Finalizada;
 - Entregue.
+
+## Reserva de Estoque
+
+Quantidade de uma peça ou insumo separada para utilização em uma
+Ordem de Serviço aprovada, permanecendo fisicamente no estoque
+até seu consumo.
+
+## Quantidade Física
+
+Quantidade total existente fisicamente no estoque.
+
+## Quantidade Reservada
+
+Quantidade física comprometida com Ordens de Serviço e ainda
+não consumida.
+
+## Quantidade Disponível
+
+Quantidade que pode ser utilizada em novas Ordens de Serviço,
+calculada pela diferença entre a quantidade física e a quantidade
+reservada.

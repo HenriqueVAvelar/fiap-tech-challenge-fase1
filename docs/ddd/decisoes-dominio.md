@@ -44,3 +44,39 @@ registrado como consumido durante a execução da Ordem de Serviço.
 
 A quantidade disponível será calculada considerando a quantidade
 física menos a quantidade reservada.
+
+## DD008 - Core Domain
+
+O contexto de Ordem de Serviço será tratado como o Core Domain
+do sistema.
+
+Esse contexto concentra as principais regras do negócio relacionadas
+ao atendimento do veículo, diagnóstico, orçamento, aprovação,
+execução, finalização e entrega.
+
+## DD009 - Separação entre agregados
+
+Cliente, Veículo, Serviço e Ordem de Serviço possuirão ciclos de vida
+e identidades independentes e serão tratados como Aggregate Roots
+distintos.
+
+Os relacionamentos entre agregados deverão ser realizados
+preferencialmente por seus identificadores.
+
+## DD010 - Dados do catálogo na Ordem de Serviço
+
+Ao adicionar um serviço, peça ou insumo a uma Ordem de Serviço,
+as informações comerciais necessárias àquele atendimento,
+especialmente descrição e preço praticado, deverão ser registradas
+no item da Ordem de Serviço.
+
+Alterações posteriores no catálogo não deverão modificar os valores
+já registrados em Ordens de Serviço existentes.
+
+## DD011 - Responsabilidade sobre o estoque
+
+As regras relativas às quantidades físicas, reservadas e disponíveis
+pertencem ao contexto de Estoque.
+
+A Ordem de Serviço poderá solicitar operações de reserva e consumo,
+mas não será responsável por alterar diretamente os saldos do estoque.

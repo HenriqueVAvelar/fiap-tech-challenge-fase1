@@ -1,5 +1,5 @@
 ﻿namespace Oficina.Domain.Interfaces;
 
-public interface ICadastroRepository
+public interface IServicoRepository
 {
 }

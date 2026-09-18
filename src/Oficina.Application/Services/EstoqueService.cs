@@ -1,10 +1,6 @@
-﻿using Oficina.Domain.Entities;
+﻿using Oficina.Application.Interfaces;
+using Oficina.Domain.Entities;
 using Oficina.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Oficina.Application.Services;
 

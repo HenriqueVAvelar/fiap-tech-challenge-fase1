@@ -4,8 +4,8 @@ namespace Oficina.Domain.Entities;
 
 public class Veiculo
 {
-    public int Id { get; set; }
-    public int ClienteId { get; set; }
+    public Guid Id { get; set; }
+    public Guid ClienteId { get; set; }
     public Placa Placa { get; set; }
     public string Marca { get; set; }
     public string Modelo { get; set; }
@@ -13,10 +13,10 @@ public class Veiculo
 
     public Cliente? Cliente { get; private set; }
 
-    public Veiculo(int clienteId, Placa placa, string marca, string modelo, int ano)
+    public Veiculo(Guid clienteId, Placa placa, string marca, string modelo, int ano)
     {
         ClienteId = clienteId;
-        Placa = placa ?? throw new ArgumentNullException(nameof(placa));
+        Placa = placa;
         Marca = marca;
         Modelo = modelo;
         Ano = ano;

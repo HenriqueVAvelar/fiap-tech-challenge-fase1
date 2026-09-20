@@ -1,9 +1,14 @@
+using Oficina.Application.Extensions;
+using Oficina.Infrastructure.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Injeção de Dependências das Camadas
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddApplication();
 
+// Configurações Globais da API
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

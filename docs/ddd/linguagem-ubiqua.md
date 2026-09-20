@@ -86,23 +86,22 @@ Os estados definidos são:
 - Finalizada;
 - Entregue.
 
-## Reserva de Estoque
+## Quantidade
 
-Quantidade de uma peça ou insumo separada para utilização em uma
-Ordem de Serviço aprovada, permanecendo fisicamente no estoque
-até seu consumo.
+Quantidade de uma peça ou insumo existente no estoque.
 
-## Quantidade Física
+É aumentada pelo registro de entrada e reduzida pelo consumo
+ocorrido durante a execução de uma Ordem de Serviço.
 
-Quantidade total existente fisicamente no estoque.
+A quantidade não poderá assumir valor negativo.
 
-## Quantidade Reservada
+## Entrada de Estoque
 
-Quantidade física comprometida com Ordens de Serviço e ainda
-não consumida.
+Operação que registra o recebimento de peças ou insumos pela oficina,
+aumentando a quantidade existente em estoque.
 
-## Quantidade Disponível
+## Consumo de Estoque
 
-Quantidade que pode ser utilizada em novas Ordens de Serviço,
-calculada pela diferença entre a quantidade física e a quantidade
-reservada.
+Operação que registra a utilização de uma peça ou insumo durante a
+execução de uma Ordem de Serviço, reduzindo a quantidade existente
+em estoque.

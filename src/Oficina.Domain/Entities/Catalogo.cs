@@ -9,9 +9,7 @@ public class Catalogo
     public decimal Preco { get; set; }
     public EnumsConsumivel.TipoConsumivel Tipo { get; set; }
     public bool Ativo { get; set; }
-    public string? Descricao { get; set; }
-
-    public Catalogo? Catalogo { get; private set; }
+    public string? Descricao { get; set; }    
 
     public Catalogo(string nome, decimal preco, EnumsConsumivel.TipoConsumivel tipo, bool ativo, string? descricao = null)
     {

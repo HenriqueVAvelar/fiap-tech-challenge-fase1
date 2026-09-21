@@ -4,9 +4,9 @@ namespace Oficina.Domain.Entities;
 
 public class OrdemServico
 {
-    public Guid Id { get; set; }
-    public Guid ClienteId { get; set; }
-    public Guid VeiculoId { get; set; }
+    public int Id { get; set; }
+    public int ClienteId { get; set; }
+    public int VeiculoId { get; set; }
     public EnumsOrdemServico.StatusOrdemServico Status { get; set; }
     public DateTime DataCriacao { get; set; }
     public string ItensServico { get; set; }

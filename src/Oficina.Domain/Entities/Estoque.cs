@@ -2,8 +2,8 @@
 
 public class Estoque
 {
-    public Guid Id { get; set; }
-    public Guid CatalogoId { get; set; }
+    public int Id { get; set; }
+    public int CatalogoId { get; set; }
     public int Quantidade { get; set; }
     public Catalogo Catalogo { get; set; }
 
@@ -13,7 +13,6 @@ public class Estoque
         if (quantidadeInicial < 0)
             throw new ArgumentOutOfRangeException(nameof(quantidadeInicial),"A quantidade inicial não pode ser negativa.");
 
-        Id = Guid.NewGuid();
         Quantidade = quantidadeInicial;
     }
 

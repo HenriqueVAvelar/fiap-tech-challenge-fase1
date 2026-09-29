@@ -44,6 +44,7 @@ O MVP será composto por um back-end monolítico disponibilizando APIs REST.
 | RF015 | O sistema deve controlar o status da Ordem de Serviço. |
 | RF016 | O sistema deve permitir consultar e detalhar Ordens de Serviço. |
 | RF017 | O sistema deve permitir consultar o tempo médio de execução dos serviços. |
+| RF018 | O sistema deve permitir registrar a aprovação ou rejeição do orçamento pelo cliente. |
 
 ## Requisitos Não Funcionais
 
@@ -61,3 +62,4 @@ O MVP será composto por um back-end monolítico disponibilizando APIs REST.
 | RNF010 | A aplicação deverá possuir Dockerfile. |
 | RNF011 | O ambiente deverá possuir docker-compose. |
 | RNF012 | O projeto deverá possuir instruções para execução local. |
+| RNF013 | Os principais fluxos que envolvam múltiplas alterações persistentes deverão possuir tratamento transacional adequado, evitando gravações parciais. |

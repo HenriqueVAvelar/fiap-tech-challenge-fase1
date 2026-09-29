@@ -20,8 +20,10 @@ os serviços, peças e insumos incluídos na Ordem de Serviço.
 
 ## RN005 - Execução após aprovação
 
-Uma Ordem de Serviço que necessita aprovação do orçamento somente poderá
-iniciar sua execução depois da aprovação do cliente.
+Uma Ordem de Serviço somente poderá iniciar sua execução depois da
+aprovação do orçamento pelo cliente.
+
+A rejeição do orçamento não autoriza o início da execução.
 
 ## RN006 - Estados da Ordem de Serviço
 
@@ -34,22 +36,29 @@ A Ordem de Serviço poderá assumir os seguintes estados:
 - Finalizada;
 - Entregue.
 
-## RN007 - Reserva de estoque
+## RN007 - Alteração do estoque
 
-Após a aprovação do orçamento, as peças e insumos necessários
-deverão ser reservados, desde que exista quantidade disponível.
+A inclusão de uma peça ou insumo em uma Ordem de Serviço não deverá
+alterar automaticamente a quantidade em estoque.
 
-## RN008 - Disponibilidade para reserva
+A baixa ocorrerá somente quando o item for efetivamente consumido.
 
-Não será permitida a reserva de uma quantidade superior à
-quantidade disponível do item.
+## RN008 - Disponibilidade para consumo
+
+Não será permitido consumir uma quantidade de peça ou insumo superior
+à quantidade existente em estoque.
 
 ## RN009 - Consumo de estoque
 
-O estoque físico deverá ser reduzido quando uma peça ou insumo
-reservado for efetivamente consumido pela Ordem de Serviço.
+A quantidade em estoque deverá ser reduzida quando uma peça ou insumo
+for efetivamente consumido durante a execução da Ordem de Serviço.
 
 ## RN010 - Quantidade de estoque
 
-As quantidades física e reservada de um item de estoque não
-poderão assumir valores negativos.
+A quantidade em estoque de uma peça ou insumo não poderá assumir
+valor negativo.
+
+## RN011 - Decisão sobre o orçamento
+
+O cliente poderá aprovar ou rejeitar o orçamento disponibilizado
+para sua análise.

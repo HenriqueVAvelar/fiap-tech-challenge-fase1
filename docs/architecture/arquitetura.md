@@ -130,5 +130,5 @@ Core Domain responsável pelo ciclo de atendimento do veículo.
 
 ### Estoque
 
-Controle das quantidades físicas, reservadas e disponíveis dos
-itens utilizados pela oficina.
+Controle da quantidade existente de peças e insumos, incluindo
+operações de entrada e consumo de estoque.

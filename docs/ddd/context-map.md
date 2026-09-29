@@ -51,11 +51,8 @@ Responsável pelo controle quantitativo das peças e insumos.
 
 Principais conceitos:
 
-- quantidade física;
-- quantidade reservada;
-- quantidade disponível;
+- quantidade;
 - entrada;
-- reserva;
 - consumo.
 
 ## Relacionamentos
@@ -73,8 +70,8 @@ aplicáveis no momento de sua inclusão.
 
 ### Ordem de Serviço → Estoque
 
-Após a aprovação do orçamento, o contexto de Ordem de Serviço
-solicita a reserva das peças e insumos necessários.
+Durante a execução dos serviços, o contexto de Ordem de Serviço
+registra o consumo das peças e insumos utilizados.
 
-Durante a execução, o consumo dos itens deverá ser refletido pelo
-contexto de Estoque.
+O contexto de Estoque é responsável por validar e atualizar
+as quantidades existentes.

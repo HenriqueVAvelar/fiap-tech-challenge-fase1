@@ -72,6 +72,14 @@ na Ordem de Serviço.
 Decisão do cliente autorizando a execução dos serviços apresentados
 no orçamento.
 
+## Rejeição do Orçamento
+
+Decisão do cliente de não autorizar a execução dos serviços
+apresentados em um orçamento.
+
+Um orçamento rejeitado não permite o início da execução
+da Ordem de Serviço.
+
 ## Status da Ordem de Serviço
 
 Representa a situação atual de uma Ordem de Serviço durante o fluxo

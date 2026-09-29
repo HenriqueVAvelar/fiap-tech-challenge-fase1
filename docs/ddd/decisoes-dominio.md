@@ -24,26 +24,37 @@ O cadastro de peças e insumos e o controle de suas quantidades
 possuem responsabilidades distintas.
 
 O Catálogo será responsável pelas informações descritivas e
-comerciais do item, enquanto o Estoque será responsável pelas
-quantidades físicas, reservadas e disponíveis.
+comerciais do item, enquanto o Estoque será responsável pelo
+controle da quantidade existente.
 
-## DD005 - Momento da reserva de estoque
+## DD005 - Modelo simplificado de estoque
 
-A reserva das peças e insumos necessários para uma Ordem de Serviço
-será realizada após a aprovação do orçamento.
+O MVP não realizará reserva de estoque para as Ordens de Serviço.
 
-A inclusão de um item durante o diagnóstico não representará
-consumo nem reserva automática de estoque.
+O estoque manterá uma única quantidade representando o saldo atual
+de cada peça ou insumo.
+
+A inclusão de uma peça ou insumo na Ordem de Serviço não altera
+automaticamente o estoque.
 
 ## DD006 - Momento da baixa de estoque
 
-A baixa física do estoque ocorrerá quando a peça ou insumo for
-registrado como consumido durante a execução da Ordem de Serviço.
+A quantidade em estoque será reduzida quando uma peça ou insumo
+for efetivamente registrado como consumido durante a execução
+da Ordem de Serviço.
 
-## DD007 - Disponibilidade de estoque
+A simples inclusão do item no orçamento ou na Ordem de Serviço
+não representa consumo de estoque.
 
-A quantidade disponível será calculada considerando a quantidade
-física menos a quantidade reservada.
+## DD007 - Controle da quantidade em estoque
+
+O estoque utilizará uma única quantidade para representar o saldo
+atual de uma peça ou insumo.
+
+Não serão mantidos, no MVP, conceitos separados de quantidade física,
+quantidade reservada e quantidade disponível.
+
+Não será permitido registrar consumo superior ao saldo atual.
 
 ## DD008 - Core Domain
 
@@ -75,8 +86,20 @@ já registrados em Ordens de Serviço existentes.
 
 ## DD011 - Responsabilidade sobre o estoque
 
-As regras relativas às quantidades físicas, reservadas e disponíveis
-pertencem ao contexto de Estoque.
+As regras relacionadas ao controle da quantidade dos itens pertencem
+ao contexto de Estoque.
 
-A Ordem de Serviço poderá solicitar operações de reserva e consumo,
-mas não será responsável por alterar diretamente os saldos do estoque.
+A Ordem de Serviço poderá registrar o consumo de peças e insumos
+durante sua execução, mas não será responsável por alterar diretamente
+a quantidade mantida pelo Estoque.
+
+## DD012 - Representação de peças e insumos
+
+Peças e insumos serão representados por um único conceito de domínio.
+
+A distinção entre os dois tipos será realizada através de um tipo
+enumerado contendo os valores Peça e Insumo.
+
+Essa decisão evita duplicação de estruturas e regras para conceitos
+que, dentro do escopo atual do sistema, possuem o mesmo ciclo de vida
+e comportamento.

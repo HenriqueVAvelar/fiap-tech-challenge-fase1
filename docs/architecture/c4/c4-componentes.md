@@ -56,9 +56,6 @@ A camada é organizada nos módulos:
 - Ordem de Serviço;
 - Estoque.
 
-Também contém contratos necessários à execução dos casos de uso,
-como abstrações para persistência.
-
 ## Domain
 
 A camada Domain concentra o modelo de domínio e suas regras.
@@ -69,7 +66,8 @@ Contém:
 - entidades;
 - Value Objects;
 - invariantes;
-- enums e demais conceitos do negócio.
+- enums e demais conceitos do negócio;
+- contratos dos repositórios dos agregados.
 
 É organizada nos módulos:
 
@@ -91,8 +89,8 @@ ItemPecaInsumo, Orcamento e StatusOrdemServico.
 
 ### Estoque
 
-Contém as regras relacionadas ao controle das quantidades físicas,
-reservadas e disponíveis dos itens de estoque.
+Contém as regras relacionadas ao controle da quantidade em estoque,
+incluindo entrada e consumo de peças e insumos.
 
 ## Infrastructure
 
@@ -108,8 +106,8 @@ Responsabilidades:
 - migrations;
 - acesso ao PostgreSQL.
 
-A Infrastructure implementa contratos definidos pelas camadas
-internas, permitindo que o domínio permaneça independente das
+A Infrastructure implementa os contratos de repositórios definidos
+no Domain, permitindo que o domínio permaneça independente das
 tecnologias utilizadas para persistência.
 
 ## Dependências

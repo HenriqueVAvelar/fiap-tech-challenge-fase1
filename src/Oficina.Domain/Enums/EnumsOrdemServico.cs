@@ -6,8 +6,8 @@ public class EnumsOrdemServico
 {
     public enum StatusOrdemServico
     {
-        [Description("Recebido")]
-        Recebido = 1,
+        [Description("Recebida")]
+        Recebida = 1,
         [Description("Em Diagnóstico")]
         EmDiagnostico = 2,
         [Description("Aguardando Aprovação")]

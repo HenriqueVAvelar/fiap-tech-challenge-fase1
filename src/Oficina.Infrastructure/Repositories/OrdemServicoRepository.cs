@@ -16,10 +16,10 @@ public class OrdemServicoRepository : IOrdemServicoRepository
 
     #region Basic CRUD
     public async Task<IEnumerable<OrdemServico>> ObterTodosAsync()
-        => await _context.OrdensServico.ToListAsync();
+        => await ComDetalhes().ToListAsync();
 
     public async Task<OrdemServico?> ObterPorIdAsync(int id)
-        => await _context.OrdensServico.FindAsync(id);
+        => await ComDetalhes().FirstOrDefaultAsync(o => o.Id == id);
 
     public async Task AdicionarAsync(OrdemServico ordemServico)
     {
@@ -43,4 +43,13 @@ public class OrdemServicoRepository : IOrdemServicoRepository
         }
     }
     #endregion
+
+    // Carrega os itens e o orçamento junto com a ordem; sem isso as regras do domínio
+    // (ex.: "já existe orçamento") enxergariam a ordem incompleta.
+    private IQueryable<OrdemServico> ComDetalhes()
+        => _context.OrdensServico
+            .Include(o => o.ItensServico)
+            .Include(o => o.ItensPecaInsumo)
+            .Include(o => o.Orcamento)
+            .AsSplitQuery();
 }

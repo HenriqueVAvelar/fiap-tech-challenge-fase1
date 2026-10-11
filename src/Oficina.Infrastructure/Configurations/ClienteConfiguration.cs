@@ -16,7 +16,24 @@ public class ClienteConfiguration : IEntityTypeConfiguration<Cliente>
             .IsRequired()
             .HasMaxLength(150);
 
-        builder.Property(c => c.Documento)
+        // Value object Documento gravado nas colunas DocumentoNumero e DocumentoTipo da tabela Clientes
+        builder.OwnsOne(c => c.Documento, documento =>
+        {
+            documento.Property(d => d.Numero)
+                .HasColumnName("DocumentoNumero")
+                .HasMaxLength(14)
+                .IsRequired();
+
+            documento.Property(d => d.Tipo)
+                .HasColumnName("DocumentoTipo")
+                .IsRequired();
+
+            // Um documento não pode pertencer a dois clientes
+            documento.HasIndex(d => d.Numero)
+                .IsUnique();
+        });
+
+        builder.Navigation(c => c.Documento)
             .IsRequired();
     }
 }

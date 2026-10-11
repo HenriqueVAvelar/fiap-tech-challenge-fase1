@@ -21,6 +21,10 @@ public class ClienteRepository : IClienteRepository
     public async Task<Cliente?> ObterPorIdAsync(int id)
         => await _context.Clientes.FindAsync(id);
 
+    public async Task<bool> DocumentoExisteAsync(string numero, int? ignorarId = null)
+        => await _context.Clientes.AnyAsync(c =>
+            c.Documento.Numero == numero && (ignorarId == null || c.Id != ignorarId));
+
     public async Task AdicionarAsync(Cliente ciente)
     {
         await _context.Clientes.AddAsync(ciente);

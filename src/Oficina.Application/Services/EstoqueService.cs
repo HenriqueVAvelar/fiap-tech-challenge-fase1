@@ -78,4 +78,32 @@ public class EstoqueService : IEstoqueService
         return true;
     }
     #endregion
+
+    public async Task<EstoqueDto?> RegistrarEntradaAsync(int id, int quantidade)
+    {
+        var estoque = await _repository.ObterPorIdAsync(id);
+
+        if (estoque is null)
+            return null;
+
+        estoque.RegistrarEntrada(quantidade);
+
+        await _repository.AtualizarAsync(estoque);
+
+        return _mapper.Map<EstoqueDto>(estoque);
+    }
+
+    public async Task<EstoqueDto?> RegistrarBaixaAsync(int id, int quantidade)
+    {
+        var estoque = await _repository.ObterPorIdAsync(id);
+
+        if (estoque is null)
+            return null;
+
+        estoque.Consumir(quantidade);
+
+        await _repository.AtualizarAsync(estoque);
+
+        return _mapper.Map<EstoqueDto>(estoque);
+    }
 }

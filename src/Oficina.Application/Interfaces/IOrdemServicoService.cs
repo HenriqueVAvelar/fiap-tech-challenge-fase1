@@ -22,6 +22,10 @@ public interface IOrdemServicoService
         int ordemServicoId,
         AdicionarPecaInsumoOrdemInputDto input);
 
+    Task<OrdemServicoDto> RegistrarConsumoAsync(
+        int ordemServicoId,
+        RegistrarConsumoOrdemInputDto input);
+
     Task<OrdemServicoDto> ConcluirDiagnosticoAsync(
         int ordemServicoId);
 

@@ -21,6 +21,8 @@ public class Estoque
         Quantidade = quantidadeInicial;
     }
 
+    public bool PossuiSaldoPara(int quantidade) => quantidade <= Quantidade;
+
     public void RegistrarEntrada(int quantidade)
     {
         if (quantidade <= 0)

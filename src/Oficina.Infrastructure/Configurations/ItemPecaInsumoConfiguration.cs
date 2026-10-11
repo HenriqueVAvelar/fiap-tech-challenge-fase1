@@ -17,6 +17,7 @@ public class ItemPecaInsumoConfiguration : IEntityTypeConfiguration<ItemPecaInsu
         builder.Property(i => i.Quantidade).IsRequired();
         builder.Property(i => i.ValorUnitario).IsRequired().HasPrecision(18, 2);
         builder.Property(i => i.ValorTotal).IsRequired().HasPrecision(18, 2);
+        builder.Property(i => i.Consumido).IsRequired();
 
         builder.HasOne<Catalogo>()
             .WithMany()

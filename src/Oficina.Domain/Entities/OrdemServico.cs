@@ -110,6 +110,46 @@ public class OrdemServico
                 valorUnitario));
     }
 
+    /// <summary>
+    /// Registra que uma lista de peças e insumos foi efetivamente consumida na execução.
+    /// Tudo ou nada: se algum item for inválido, nenhum é marcado como consumido.
+    /// Devolve os itens para que o Estoque realize a baixa das quantidades.
+    /// </summary>
+    public IReadOnlyList<ItemPecaInsumo> RegistrarConsumoPecasInsumos(
+        IEnumerable<int> itensIds)
+    {
+        GarantirStatus(
+            EnumsOrdemServico.StatusOrdemServico.EmExecucao);
+
+        var ids = itensIds.Distinct().ToList();
+
+        if (ids.Count == 0)
+            throw new ArgumentException(
+                "Informe ao menos uma peça ou insumo para registrar o consumo.",
+                nameof(itensIds));
+
+        var itens = new List<ItemPecaInsumo>();
+
+        foreach (var itemId in ids)
+        {
+            var item = _itensPecaInsumo.FirstOrDefault(i => i.Id == itemId);
+
+            if (item is null)
+                throw new KeyNotFoundException(
+                    $"Peça ou insumo {itemId} não encontrado na Ordem de Serviço.");
+
+            if (item.Consumido)
+                throw new InvalidOperationException(
+                    $"O consumo de '{item.Nome}' já foi registrado.");
+
+            itens.Add(item);
+        }
+
+        itens.ForEach(item => item.MarcarComoConsumido());
+
+        return itens;
+    }
+
     public void ConcluirDiagnostico()
     {
         GarantirStatus(

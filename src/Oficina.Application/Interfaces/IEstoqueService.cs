@@ -13,4 +13,8 @@ public interface IEstoqueService
     Task<bool> AtualizarAsync(int id, EstoqueUpdateInputDto estoque);
 
     Task<bool> RemoverAsync(int id);
+
+    Task<EstoqueDto?> RegistrarEntradaAsync(int id, int quantidade);
+
+    Task<EstoqueDto?> RegistrarBaixaAsync(int id, int quantidade);
 }

@@ -24,6 +24,17 @@ public class EstoqueTests
         Assert.Throws<ArgumentOutOfRangeException>(() => estoque.RegistrarEntrada(quantidade));
     }
 
+    [Theory]
+    [InlineData(0, true)]
+    [InlineData(10, true)]
+    [InlineData(11, false)]
+    public void PossuiSaldoPara_DeveComparar_ComOSaldoAtual(int quantidade, bool esperado)
+    {
+        var estoque = new Estoque(10);
+
+        Assert.Equal(esperado, estoque.PossuiSaldoPara(quantidade));
+    }
+
     [Fact]
     public void Consumir_DeveReduzirAQuantidade()
     {

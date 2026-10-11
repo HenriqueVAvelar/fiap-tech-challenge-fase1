@@ -12,6 +12,7 @@ namespace Oficina.Api.Controllers;
 public class OrdensServicoController : ApiControllerBase
 {
     private const string Administrador = nameof(EnumsUsuario.PerfilUsuario.Administrador);
+    private const string AdministradorOuMecanico = Administrador + "," + nameof(EnumsUsuario.PerfilUsuario.Mecanico);
 
     private readonly IOrdemServicoService _service;
 
@@ -53,27 +54,28 @@ public class OrdensServicoController : ApiControllerBase
     public Task<IActionResult> AdicionarPecaInsumo(int id, [FromBody] AdicionarPecaInsumoOrdemInputDto item)
         => ExecutarAsync(async () => Ok(await _service.AdicionarPecaInsumoAsync(id, item)));
 
+    [HttpPost("{id:int}/consumir-pecas-insumos")]
+    [Authorize(Roles = AdministradorOuMecanico)]
+    public Task<IActionResult> RegistrarConsumo(int id, [FromBody] RegistrarConsumoOrdemInputDto consumo)
+        => ExecutarAsync(async () => Ok(await _service.RegistrarConsumoAsync(id, consumo)));
+
     [HttpPost("{id:int}/iniciar-diagnostico")]
-    [Authorize(Roles = Administrador)]
-    [Authorize(Roles = nameof(EnumsUsuario.PerfilUsuario.Mecanico))]
+    [Authorize(Roles = AdministradorOuMecanico)]
     public Task<IActionResult> IniciarDiagnostico(int id)
         => ExecutarAsync(async () => Ok(await _service.IniciarDiagnosticoAsync(id)));
 
     [HttpPost("{id:int}/concluir-diagnostico")]
-    [Authorize(Roles = Administrador)]
-    [Authorize(Roles = nameof(EnumsUsuario.PerfilUsuario.Mecanico))]
+    [Authorize(Roles = AdministradorOuMecanico)]
     public Task<IActionResult> ConcluirDiagnostico(int id)
         => ExecutarAsync(async () => Ok(await _service.ConcluirDiagnosticoAsync(id)));
 
     [HttpPost("{id:int}/gerar-orcamento")]
-    [Authorize(Roles = Administrador)]
-    [Authorize(Roles = nameof(EnumsUsuario.PerfilUsuario.Mecanico))]
+    [Authorize(Roles = AdministradorOuMecanico)]
     public Task<IActionResult> GerarOrcamento(int id)
         => ExecutarAsync(async () => Ok(await _service.GerarOrcamentoAsync(id)));
 
     [HttpPost("{id:int}/disponibilizar-orcamento")]
-    [Authorize(Roles = Administrador)]
-    [Authorize(Roles = nameof(EnumsUsuario.PerfilUsuario.Mecanico))]
+    [Authorize(Roles = AdministradorOuMecanico)]
     public Task<IActionResult> DisponibilizarOrcamento(int id)
         => ExecutarAsync(async () => Ok(await _service.DisponibilizarOrcamentoAsync(id)));
 
@@ -93,8 +95,7 @@ public class OrdensServicoController : ApiControllerBase
         => ExecutarAsync(async () => Ok(await _service.IniciarExecucaoAsync(id)));
 
     [HttpPost("{id:int}/finalizar")]
-    [Authorize(Roles = Administrador)]
-    [Authorize(Roles = nameof(EnumsUsuario.PerfilUsuario.Mecanico))]
+    [Authorize(Roles = AdministradorOuMecanico)]
     public Task<IActionResult> Finalizar(int id)
         => ExecutarAsync(async () => Ok(await _service.FinalizarAsync(id)));
 

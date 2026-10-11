@@ -13,6 +13,11 @@ public class EstoqueConfiguration : IEntityTypeConfiguration<Estoque>
         builder.HasKey(e => e.Id);
 
         builder.Property(e => e.Quantidade).IsRequired();
+                
+        builder.Property<uint>("xmin")
+            .HasColumnType("xid")
+            .ValueGeneratedOnAddOrUpdate()
+            .IsConcurrencyToken();
 
         builder.HasOne(e => e.Catalogo)
             .WithMany()

@@ -41,11 +41,30 @@ public class EstoquesController : ApiControllerBase
         });
 
     [HttpPut("{id:int}")]
-    [Authorize(Roles = nameof(EnumsUsuario.PerfilUsuario.Administrador))]
-    [Authorize(Roles = nameof(EnumsUsuario.PerfilUsuario.Mecanico))]
+    [Authorize(Roles = nameof(EnumsUsuario.PerfilUsuario.Administrador) + "," + nameof(EnumsUsuario.PerfilUsuario.Mecanico))]
     public Task<IActionResult> Update(int id, [FromBody] EstoqueUpdateInputDto estoque)
         => ExecutarAsync(async () =>
             await _service.AtualizarAsync(id, estoque) ? NoContent() : NotFound());
+
+    [HttpPost("{id:int}/entrada")]
+    [Authorize(Roles = nameof(EnumsUsuario.PerfilUsuario.Administrador))]
+    public Task<IActionResult> RegistrarEntrada(int id, [FromBody] EstoqueMovimentacaoInputDto movimentacao)
+        => ExecutarAsync(async () =>
+        {
+            var estoque = await _service.RegistrarEntradaAsync(id, movimentacao.Quantidade);
+
+            return estoque is null ? NotFound() : Ok(estoque);
+        });
+
+    [HttpPost("{id:int}/baixa")]
+    [Authorize(Roles = nameof(EnumsUsuario.PerfilUsuario.Administrador) + "," + nameof(EnumsUsuario.PerfilUsuario.Mecanico))]
+    public Task<IActionResult> RegistrarBaixa(int id, [FromBody] EstoqueMovimentacaoInputDto movimentacao)
+        =>  ExecutarAsync(async () =>
+        {
+            var estoque = await _service.RegistrarBaixaAsync(id, movimentacao.Quantidade);
+
+            return estoque is null ? NotFound() : Ok(estoque);
+        });
 
     [HttpDelete("{id:int}")]
     [Authorize(Roles = nameof(EnumsUsuario.PerfilUsuario.Administrador))]

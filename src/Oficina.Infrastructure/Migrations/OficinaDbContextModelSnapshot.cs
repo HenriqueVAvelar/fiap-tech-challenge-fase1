@@ -86,6 +86,12 @@ namespace Oficina.Infrastructure.Migrations
                     b.Property<int>("Quantidade")
                         .HasColumnType("integer");
 
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CatalogoId")
@@ -104,6 +110,9 @@ namespace Oficina.Infrastructure.Migrations
 
                     b.Property<int>("CatalogoId")
                         .HasColumnType("integer");
+
+                    b.Property<bool>("Consumido")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Nome")
                         .IsRequired()

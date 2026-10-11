@@ -6,6 +6,7 @@ using Oficina.Domain.Interfaces;
 using Oficina.Infrastructure.Context;
 using Oficina.Infrastructure.Repositories;
 using Oficina.Infrastructure.Security;
+using Oficina.Infrastructure.Seed;
 
 namespace Oficina.Infrastructure.Extensions;
 
@@ -31,6 +32,7 @@ public static class DependencyInjection
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
         services.Configure<AdminSeedSettings>(configuration.GetSection(AdminSeedSettings.SectionName));
+        services.Configure<DemoDataSettings>(configuration.GetSection(DemoDataSettings.SectionName));
         services.AddSingleton<ITokenService, JwtTokenService>();
 
         return services;

@@ -6,6 +6,7 @@ using Oficina.Domain.Enums;
 
 namespace Oficina.Api.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class ServicosController : ApiControllerBase

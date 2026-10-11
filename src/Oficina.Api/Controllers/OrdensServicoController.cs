@@ -6,6 +6,7 @@ using Oficina.Domain.Enums;
 
 namespace Oficina.Api.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class OrdensServicoController : ApiControllerBase
@@ -24,6 +25,7 @@ public class OrdensServicoController : ApiControllerBase
         => Ok(await _service.ObterTodosAsync());
 
     [HttpGet("{id:int}")]
+    [AllowAnonymous] // Sabendo o Id, qualquer pessoa pode consultar (teremos numero de OS ?)
     public async Task<IActionResult> GetById(int id)
     {
         var result = await _service.ObterPorIdAsync(id);
@@ -53,21 +55,25 @@ public class OrdensServicoController : ApiControllerBase
 
     [HttpPost("{id:int}/iniciar-diagnostico")]
     [Authorize(Roles = Administrador)]
+    [Authorize(Roles = nameof(EnumsUsuario.PerfilUsuario.Mecanico))]
     public Task<IActionResult> IniciarDiagnostico(int id)
         => ExecutarAsync(async () => Ok(await _service.IniciarDiagnosticoAsync(id)));
 
     [HttpPost("{id:int}/concluir-diagnostico")]
     [Authorize(Roles = Administrador)]
+    [Authorize(Roles = nameof(EnumsUsuario.PerfilUsuario.Mecanico))]
     public Task<IActionResult> ConcluirDiagnostico(int id)
         => ExecutarAsync(async () => Ok(await _service.ConcluirDiagnosticoAsync(id)));
 
     [HttpPost("{id:int}/gerar-orcamento")]
     [Authorize(Roles = Administrador)]
+    [Authorize(Roles = nameof(EnumsUsuario.PerfilUsuario.Mecanico))]
     public Task<IActionResult> GerarOrcamento(int id)
         => ExecutarAsync(async () => Ok(await _service.GerarOrcamentoAsync(id)));
 
     [HttpPost("{id:int}/disponibilizar-orcamento")]
     [Authorize(Roles = Administrador)]
+    [Authorize(Roles = nameof(EnumsUsuario.PerfilUsuario.Mecanico))]
     public Task<IActionResult> DisponibilizarOrcamento(int id)
         => ExecutarAsync(async () => Ok(await _service.DisponibilizarOrcamentoAsync(id)));
 
@@ -88,6 +94,7 @@ public class OrdensServicoController : ApiControllerBase
 
     [HttpPost("{id:int}/finalizar")]
     [Authorize(Roles = Administrador)]
+    [Authorize(Roles = nameof(EnumsUsuario.PerfilUsuario.Mecanico))]
     public Task<IActionResult> Finalizar(int id)
         => ExecutarAsync(async () => Ok(await _service.FinalizarAsync(id)));
 

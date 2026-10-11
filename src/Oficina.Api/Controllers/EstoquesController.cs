@@ -6,6 +6,7 @@ using Oficina.Domain.Enums;
 
 namespace Oficina.Api.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class EstoquesController : ApiControllerBase
@@ -41,6 +42,7 @@ public class EstoquesController : ApiControllerBase
 
     [HttpPut("{id:int}")]
     [Authorize(Roles = nameof(EnumsUsuario.PerfilUsuario.Administrador))]
+    [Authorize(Roles = nameof(EnumsUsuario.PerfilUsuario.Mecanico))]
     public Task<IActionResult> Update(int id, [FromBody] EstoqueUpdateInputDto estoque)
         => ExecutarAsync(async () =>
             await _service.AtualizarAsync(id, estoque) ? NoContent() : NotFound());

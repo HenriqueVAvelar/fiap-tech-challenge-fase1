@@ -4,7 +4,7 @@ namespace Oficina.Domain.Enums;
 
 public class EnumsOrcamento
 {
-    public enum StatusOrcamento
+    public enum StatusOrcamento : byte
     {
         [Description("Pendente")]
         Pendente = 1,

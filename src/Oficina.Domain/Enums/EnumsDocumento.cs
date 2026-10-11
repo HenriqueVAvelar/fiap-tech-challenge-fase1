@@ -4,7 +4,7 @@ namespace Oficina.Domain.Enums;
 
 public class EnumsDocumento
 {
-    public enum TipoDocumento
+    public enum TipoDocumento : byte
     {
         [Description("CPF")]
         Cpf = 1,

@@ -7,6 +7,11 @@ public class Estoque
     public int Quantidade { get; set; }
     public Catalogo Catalogo { get; set; }
 
+        
+    private Estoque()
+    {
+        Catalogo = null!;
+    }
 
     public Estoque(int quantidadeInicial = 0)
     {

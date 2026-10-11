@@ -4,7 +4,7 @@ namespace Oficina.Domain.Enums;
 
 public class EnumsConsumivel
 {
-    public enum TipoConsumivel
+    public enum TipoConsumivel : byte
     {
         [Description("Peça")]
         Peca = 1,

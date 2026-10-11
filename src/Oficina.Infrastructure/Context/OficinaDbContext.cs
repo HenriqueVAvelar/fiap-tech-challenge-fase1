@@ -20,6 +20,7 @@ public class OficinaDbContext : DbContext
     public DbSet<OrdemServico> OrdensServico { get; set; }
     public DbSet<Servico> Servicos { get; set; }
     public DbSet<Veiculo> Veiculos { get; set; }
+    public DbSet<Usuario> Usuarios { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

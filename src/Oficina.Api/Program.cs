@@ -1,18 +1,48 @@
+using Microsoft.OpenApi.Models;
+using Oficina.Api.Extensions;
 using Oficina.Application.Extensions;
 using Oficina.Infrastructure.Extensions;
+using Oficina.Infrastructure.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// InjeÁ„o de DependÍncias das Camadas
+// InjeÔøΩÔøΩo de DependÔøΩncias das Camadas
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 
-// ConfiguraÁıes Globais da API
-builder.Services.AddControllers();
+// ConfiguraÔøΩÔøΩes Globais da API
+builder.Services.AddControllers()
+    .AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter()));
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddJwtAuthentication(builder.Configuration);
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "Informe o token JWT obtido em POST /Auth/login.",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT"
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
 
 var app = builder.Build();
+
+// Cria o primeiro Administrador (se√ß√£o "AdminSeed" da configura√ß√£o), se ainda n√£o existir
+await app.Services.SeedAdminAsync();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -23,6 +53,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

@@ -2,26 +2,25 @@ services:
   web_api:
     container_name: oficina_api_app
     build: .
-    image: oficina-api:1.0.0
     ports:
       - 8080:8080
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:8080
-      - ConnectionStrings__default=Host=db;Database=OficinaDb;Username=postgres;Password=p@55w0rd
+      - ConnectionStrings__default=${CONNECTION_STRING}
     depends_on:
       db:
         condition: service_healthy
-        restart: true4
+        restart: true
   db:
     image: postgres:16.9-bullseye
     container_name: postgres_db
     ports:
       - 5432:5432
     environment:
-      POSTGRES_PASSWORD: p@55w0rd
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
-      - postgres_date:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s

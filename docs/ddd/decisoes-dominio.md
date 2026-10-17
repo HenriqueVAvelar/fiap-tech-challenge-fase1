@@ -103,3 +103,19 @@ enumerado contendo os valores Peça e Insumo.
 Essa decisão evita duplicação de estruturas e regras para conceitos
 que, dentro do escopo atual do sistema, possuem o mesmo ciclo de vida
 e comportamento.
+
+## DD013 - Cálculo do tempo médio de execução
+
+Para o MVP, o tempo médio de execução será calculado considerando
+o intervalo entre o início da execução e a finalização das Ordens
+de Serviço concluídas.
+
+Serão consideradas no cálculo as Ordens de Serviço que possuam
+DataInicioExecucao e DataFinalizacao registradas e estejam nos
+estados Finalizada ou Entregue.
+
+Ordens de Serviço ainda em execução ou que não tenham iniciado sua
+execução não participarão do cálculo.
+
+A métrica representa o tempo médio da fase de execução das Ordens
+de Serviço e será apresentada em minutos.

@@ -1,6 +1,7 @@
 using Oficina.Application.Services;
 using Oficina.Domain.Entities;
 using Oficina.Domain.Interfaces;
+using Ordem = Oficina.Domain.Entities.OrdemServico;
 
 namespace Oficina.Application.UnitTests.Indicadores;
 
@@ -13,7 +14,7 @@ public class TempoMedioExecucaoServiceTests
             new OrdemServicoRepositoryFake(
                 new[]
                 {
-                    new OrdemServico(1, 1)
+                    new Ordem(1, 1)
                 });
 
         var service =
@@ -107,7 +108,7 @@ public class TempoMedioExecucaoServiceTests
             resultado.TempoMedioMinutos);
     }
 
-    private static OrdemServico CriarOrdemFinalizada(
+    private static Ordem CriarOrdemFinalizada(
         int clienteId,
         int veiculoId)
     {
@@ -121,12 +122,12 @@ public class TempoMedioExecucaoServiceTests
         return ordem;
     }
 
-    private static OrdemServico CriarOrdemEmExecucao(
+    private static Ordem CriarOrdemEmExecucao(
         int clienteId,
         int veiculoId)
     {
         var ordem =
-            new OrdemServico(
+            new Ordem(
                 clienteId,
                 veiculoId);
 
@@ -153,35 +154,35 @@ public class TempoMedioExecucaoServiceTests
     private sealed class OrdemServicoRepositoryFake
         : IOrdemServicoRepository
     {
-        private readonly IEnumerable<OrdemServico> _ordens;
+        private readonly IEnumerable<Ordem> _ordens;
 
         public OrdemServicoRepositoryFake(
-            IEnumerable<OrdemServico> ordens)
+            IEnumerable<Ordem> ordens)
         {
             _ordens = ordens;
         }
 
-        public Task<IEnumerable<OrdemServico>>
+        public Task<IEnumerable<Ordem>>
             ObterTodosAsync()
         {
             return Task.FromResult(_ordens);
         }
 
-        public Task<OrdemServico?> ObterPorIdAsync(
+        public Task<Ordem?> ObterPorIdAsync(
             int id)
         {
-            return Task.FromResult<OrdemServico?>(
+            return Task.FromResult<Ordem?>(
                 null);
         }
 
         public Task AdicionarAsync(
-            OrdemServico ordemServico)
+            Ordem ordemServico)
         {
             return Task.CompletedTask;
         }
 
         public Task AtualizarAsync(
-            OrdemServico ordemServico)
+            Ordem ordemServico)
         {
             return Task.CompletedTask;
         }

@@ -1,12 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+using Oficina.Domain.Enums;
 
 namespace Oficina.Application.DTOs;
 
 public class ClienteDto
 {
-    [Required]
-    public string Nome { get; set; } = string.Empty;
+    public int Id { get; set; }
+    public required string Nome { get; set; }
 
-    [Required]
-    public string Documento { get; set; } = string.Empty;
+    /// <summary>Somente os dígitos do CPF/CNPJ.</summary>
+    public required string Documento { get; set; }
+
+    public EnumsDocumento.TipoDocumento TipoDocumento { get; set; }
 }

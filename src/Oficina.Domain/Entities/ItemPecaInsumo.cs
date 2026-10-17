@@ -18,6 +18,9 @@ public class ItemPecaInsumo
 
     public decimal ValorTotal { get; private set; }
 
+    // A baixa no estoque só ocorre quando o item é efetivamente consumido na execução da OS.
+    public bool Consumido { get; private set; }
+
     private ItemPecaInsumo()
     {
     }
@@ -55,5 +58,14 @@ public class ItemPecaInsumo
         Quantidade = quantidade;
         ValorUnitario = valorUnitario;
         ValorTotal = quantidade * valorUnitario;
+    }
+
+    internal void MarcarComoConsumido()
+    {
+        if (Consumido)
+            throw new InvalidOperationException(
+                "O consumo desta peça ou insumo já foi registrado.");
+
+        Consumido = true;
     }
 }

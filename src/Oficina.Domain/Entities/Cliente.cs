@@ -17,7 +17,23 @@ public class Cliente
 
     public Cliente(string nome, Documento documento)
     {
-        Nome = nome;
+        ValidarNome(nome);
+
+        Nome = nome.Trim();
         Documento = documento ?? throw new ArgumentNullException(nameof(documento));
+    }
+
+    public void Atualizar(string nome, Documento documento)
+    {
+        ValidarNome(nome);
+
+        Nome = nome.Trim();
+        Documento = documento ?? throw new ArgumentNullException(nameof(documento));
+    }
+
+    private static void ValidarNome(string nome)
+    {
+        if (string.IsNullOrWhiteSpace(nome))
+            throw new ArgumentException("O nome do cliente é obrigatório.", nameof(nome));
     }
 }

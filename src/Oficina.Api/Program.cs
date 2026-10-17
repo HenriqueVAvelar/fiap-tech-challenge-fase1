@@ -3,6 +3,7 @@ using Oficina.Api.Extensions;
 using Oficina.Application.Extensions;
 using Oficina.Infrastructure.Extensions;
 using Oficina.Infrastructure.Security;
+using Oficina.Infrastructure.Seed;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,6 +44,9 @@ var app = builder.Build();
 
 // Cria o primeiro Administrador (seção "AdminSeed" da configuração), se ainda não existir
 await app.Services.SeedAdminAsync();
+
+// Cria cliente, veículo e OS de demonstração (seção "DemoData" da configuração), se habilitado
+await app.Services.SeedDadosDemoAsync();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

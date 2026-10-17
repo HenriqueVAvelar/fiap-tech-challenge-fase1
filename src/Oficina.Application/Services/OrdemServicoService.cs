@@ -12,19 +12,22 @@ public class OrdemServicoService : IOrdemServicoService
     private readonly IVeiculoRepository _veiculoRepository;
     private readonly IServicoRepository _servicoRepository;
     private readonly ICatalogoRepository _catalogoRepository;
+    private readonly IEstoqueRepository _estoqueRepository;
 
     public OrdemServicoService(
         IOrdemServicoRepository ordemServicoRepository,
         IClienteRepository clienteRepository,
         IVeiculoRepository veiculoRepository,
         IServicoRepository servicoRepository,
-        ICatalogoRepository catalogoRepository)
+        ICatalogoRepository catalogoRepository,
+        IEstoqueRepository estoqueRepository)
     {
         _ordemServicoRepository = ordemServicoRepository;
         _clienteRepository = clienteRepository;
         _veiculoRepository = veiculoRepository;
         _servicoRepository = servicoRepository;
         _catalogoRepository = catalogoRepository;
+        _estoqueRepository = estoqueRepository;
     }
 
     public async Task<IEnumerable<OrdemServicoDto>> ObterTodosAsync()
@@ -133,6 +136,8 @@ public class OrdemServicoService : IOrdemServicoService
             throw new InvalidOperationException(
                 "Não é possível adicionar um item de catálogo inativo à Ordem de Serviço.");
 
+        await GarantirSaldoAsync(ordem, item, input.Quantidade);
+
         ordem.AdicionarPecaInsumo(
             item.Id,
             item.Nome,
@@ -140,6 +145,36 @@ public class OrdemServicoService : IOrdemServicoService
             input.Quantidade,
             item.Preco);
 
+        await _ordemServicoRepository.AtualizarAsync(ordem);
+
+        return Mapear(ordem);
+    }
+
+    public async Task<OrdemServicoDto> RegistrarConsumoAsync(
+        int ordemServicoId,
+        RegistrarConsumoOrdemInputDto input)
+    {
+        var ordem = await ObterOrdemAsync(ordemServicoId);
+
+        var itens = ordem.RegistrarConsumoPecasInsumos(input.ItensIds);
+
+        foreach (var item in itens)
+        {
+            var estoque =
+                await _estoqueRepository.ObterPorCatalogoIdAsync(item.CatalogoId);
+
+            if (estoque is null)
+                throw new InvalidOperationException(
+                    $"Não há estoque cadastrado para '{item.Nome}'.");
+
+            if (!estoque.PossuiSaldoPara(item.Quantidade))
+                throw new InvalidOperationException(
+                    $"Estoque insuficiente para '{item.Nome}'. " +
+                    $"Saldo: {estoque.Quantidade}; necessário: {item.Quantidade}.");
+
+            estoque.Consumir(item.Quantidade);
+        }
+        
         await _ordemServicoRepository.AtualizarAsync(ordem);
 
         return Mapear(ordem);
@@ -240,6 +275,26 @@ public class OrdemServicoService : IOrdemServicoService
 
         return Mapear(ordem);
     }
+    
+    private async Task GarantirSaldoAsync(
+        Domain.Entities.OrdemServico ordem,
+        Catalogo item,
+        int quantidade)
+    {
+        var estoque =
+            await _estoqueRepository.ObterPorCatalogoIdAsync(item.Id);
+
+        var jaIncluida = ordem.ItensPecaInsumo
+            .Where(i => i.CatalogoId == item.Id && !i.Consumido)
+            .Sum(i => i.Quantidade);
+
+        var saldo = estoque?.Quantidade ?? 0;
+
+        if (estoque is null || !estoque.PossuiSaldoPara(jaIncluida + quantidade))
+            throw new InvalidOperationException(
+                $"Estoque insuficiente para '{item.Nome}'. " +
+                $"Saldo: {saldo}; já incluído na OS: {jaIncluida}; solicitado: {quantidade}.");
+    }
 
     private async Task<Domain.Entities.OrdemServico> ObterOrdemAsync(
         int ordemServicoId)
@@ -284,7 +339,9 @@ public class OrdemServicoService : IOrdemServicoService
             ItensPecaInsumo = ordem.ItensPecaInsumo.Select(
                 item => new ItemPecaInsumoDto
                 {
+                    Id = item.Id,
                     CatalogoId = item.CatalogoId,
+                    Consumido = item.Consumido,
                     Nome = item.Nome,
                     Tipo = item.Tipo,
                     Quantidade = item.Quantidade,

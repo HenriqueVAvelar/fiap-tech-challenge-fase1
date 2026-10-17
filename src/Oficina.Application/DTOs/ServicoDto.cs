@@ -1,15 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-
 namespace Oficina.Application.DTOs;
 
 public class ServicoDto
 {
-    [Required]
-    public string Descricao { get; set; } = string.Empty;
-
-    [Required]
+    public int Id { get; set; }
+    public required string Descricao { get; set; }
     public decimal Valor { get; set; }
-
-    [Required]
     public bool Ativo { get; set; }
 }

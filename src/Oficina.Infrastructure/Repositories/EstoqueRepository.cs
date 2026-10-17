@@ -21,6 +21,9 @@ public class EstoqueRepository : IEstoqueRepository
     public async Task<Estoque?> ObterPorIdAsync(int id)
         => await _context.Estoques.FindAsync(id);
 
+    public async Task<Estoque?> ObterPorCatalogoIdAsync(int catalogoId)
+        => await _context.Estoques.FirstOrDefaultAsync(e => e.CatalogoId == catalogoId);
+
     public async Task AdicionarAsync(Estoque estoque)
     {
         await _context.Estoques.AddAsync(estoque);

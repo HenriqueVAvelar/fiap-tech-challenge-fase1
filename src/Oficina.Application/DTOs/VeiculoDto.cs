@@ -1,19 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-
 namespace Oficina.Application.DTOs;
+
 public class VeiculoDto
 {
-    [Required]
+    public int Id { get; set; }
     public int ClienteId { get; set; }
-    [Required]
-    public string Placa { get; set; } = string.Empty;
-
-    [Required]
-    public string Marca { get; set; } = string.Empty;
-
-    [Required]
-    public string Modelo { get; set; } = string.Empty;
-
-    [Required]
+    public required string Placa { get; set; }
+    public required string Marca { get; set; }
+    public required string Modelo { get; set; }
     public int Ano { get; set; }
 }

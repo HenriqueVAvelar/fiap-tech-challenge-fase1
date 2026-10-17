@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Oficina.Application.DTOs.Auth;
 using Oficina.Application.Interfaces;
@@ -15,6 +16,7 @@ public class AuthController : ControllerBase
         _service = service;
     }
 
+    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginInputDto login)
     {

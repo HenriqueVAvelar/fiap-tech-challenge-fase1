@@ -4,7 +4,7 @@ namespace Oficina.Domain.Enums;
 
 public class EnumsOrdemServico
 {
-    public enum StatusOrdemServico
+    public enum StatusOrdemServico : byte
     {
         [Description("Recebida")]
         Recebida = 1,

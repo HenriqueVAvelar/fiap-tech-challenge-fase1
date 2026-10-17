@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Oficina.Application.Interfaces;
 using Oficina.Domain.Interfaces;
 using Oficina.Infrastructure.Context;
 using Oficina.Infrastructure.Repositories;
+using Oficina.Infrastructure.Security;
 
 namespace Oficina.Infrastructure.Extensions;
 
@@ -23,6 +25,13 @@ public static class DependencyInjection
         services.AddScoped<IOrdemServicoRepository, OrdemServicoRepository>();
         services.AddScoped<IServicoRepository, ServicoRepository>();
         services.AddScoped<IVeiculoRepository, VeiculoRepository>();
+        services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+
+        // Security
+        services.AddSingleton<IPasswordHasher, PasswordHasher>();
+        services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
+        services.Configure<AdminSeedSettings>(configuration.GetSection(AdminSeedSettings.SectionName));
+        services.AddSingleton<ITokenService, JwtTokenService>();
 
         return services;
     }

@@ -28,24 +28,24 @@ public class ClienteRepository : IClienteRepository
         => await _context.Clientes.AnyAsync(c =>
             c.Documento.Numero == numero && (ignorarId == null || c.Id != ignorarId));
 
-    public async Task AdicionarAsync(Cliente ciente)
+    public async Task AdicionarAsync(Cliente cliente)
     {
-        await _context.Clientes.AddAsync(ciente);
+        await _context.Clientes.AddAsync(cliente);
         await _context.SaveChangesAsync();
     }
 
-    public async Task AtualizarAsync(Cliente ciente)
+    public async Task AtualizarAsync(Cliente cliente)
     {
-        _context.Clientes.Update(ciente);
+        _context.Clientes.Update(cliente);
         await _context.SaveChangesAsync();
     }
 
     public async Task RemoverAsync(int id)
     {
-        var ciente = await ObterPorIdAsync(id);
-        if (ciente != null)
+        var cliente = await ObterPorIdAsync(id);
+        if (cliente != null)
         {
-            _context.Clientes.Remove(ciente);
+            _context.Clientes.Remove(cliente);
             await _context.SaveChangesAsync();
         }
     }

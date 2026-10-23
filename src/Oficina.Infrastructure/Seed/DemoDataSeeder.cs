@@ -85,8 +85,8 @@ public static class DemoDataSeeder
 
         var ordem = await ordemService.CriarAsync(new CriarOrdemServicoInputDto
         {
-            ClienteId = cliente.Id,
-            VeiculoId = veiculo.Id
+            Documento = cliente.Documento,
+            Placa = veiculo.Placa
         });
 
         logger.LogInformation(

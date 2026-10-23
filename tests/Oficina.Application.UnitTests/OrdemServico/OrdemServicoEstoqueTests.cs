@@ -269,6 +269,9 @@ public class OrdemServicoEstoqueTests
         public Task<IEnumerable<Ordem>> ObterTodosAsync()
             => Task.FromResult<IEnumerable<Ordem>>(Itens.ToList());
 
+        public Task<IEnumerable<Ordem>> ObterPorClienteIdAsync(int clienteId)
+            => Task.FromResult<IEnumerable<Ordem>>(Itens.Where(o => o.ClienteId == clienteId).ToList());
+
         public Task<Ordem?> ObterPorIdAsync(int id)
             => Task.FromResult(Itens.FirstOrDefault(o => o.Id == id));
 

@@ -6,7 +6,6 @@ using Oficina.Domain.Enums;
 
 namespace Oficina.Api.Controllers;
 
-[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class OrdensServicoController : ApiControllerBase
@@ -22,17 +21,15 @@ public class OrdensServicoController : ApiControllerBase
     }
 
     [HttpGet]
+    [Authorize(Roles = Administrador)]
     public async Task<IActionResult> GetAll()
         => Ok(await _service.ObterTodosAsync());
 
-    [HttpGet("{id:int}")]
-    [AllowAnonymous] // Sabendo o Id, qualquer pessoa pode consultar (teremos numero de OS ?)
-    public async Task<IActionResult> GetById(int id)
-    {
-        var result = await _service.ObterPorIdAsync(id);
-
-        return result is null ? NotFound() : Ok(result);
-    }
+    
+    [HttpGet("{documento}")]
+    [AllowAnonymous]
+    public Task<IActionResult> GetByDocumento(string documento)
+        => ExecutarAsync(async () => Ok(await _service.ObterPorDocumentoAsync(documento)));
 
     [HttpPost]
     [Authorize(Roles = Administrador)]
@@ -41,7 +38,9 @@ public class OrdensServicoController : ApiControllerBase
         {
             var criada = await _service.CriarAsync(ordem);
 
-            return CreatedAtAction(nameof(GetById), new { id = criada.Id }, criada);
+            var documento = new string(ordem.Documento.Where(char.IsDigit).ToArray());
+
+            return CreatedAtAction(nameof(GetByDocumento), new { documento }, criada);
         });
 
     [HttpPost("{id:int}/servicos")]
@@ -79,15 +78,21 @@ public class OrdensServicoController : ApiControllerBase
     public Task<IActionResult> DisponibilizarOrcamento(int id)
         => ExecutarAsync(async () => Ok(await _service.DisponibilizarOrcamentoAsync(id)));
 
-    [HttpPost("{id:int}/aprovar-orcamento")]
-    [Authorize(Roles = Administrador)]
-    public Task<IActionResult> AprovarOrcamento(int id)
-        => ExecutarAsync(async () => Ok(await _service.AprovarOrcamentoAsync(id)));
+    /// <summary>
+    /// Aprova o orçamento da OS do cliente que está aguardando decisão, identificado pelo CPF/CNPJ.
+    /// Se o cliente tiver mais de uma OS aguardando, informe a placa do veículo.
+    /// </summary>
+    [HttpPost("{documento}/aprovar-orcamento")]
+    public Task<IActionResult> AprovarOrcamento(string documento, [FromQuery] string? placa = null)
+        => ExecutarAsync(async () => Ok(await _service.AprovarOrcamentoAsync(documento, placa)));
 
-    [HttpPost("{id:int}/rejeitar-orcamento")]
-    [Authorize(Roles = Administrador)]
-    public Task<IActionResult> RejeitarOrcamento(int id)
-        => ExecutarAsync(async () => Ok(await _service.RejeitarOrcamentoAsync(id)));
+    /// <summary>
+    /// Rejeita o orçamento da OS do cliente que está aguardando decisão, identificado pelo CPF/CNPJ.
+    /// Se o cliente tiver mais de uma OS aguardando, informe a placa do veículo.
+    /// </summary>
+    [HttpPost("{documento}/rejeitar-orcamento")]
+    public Task<IActionResult> RejeitarOrcamento(string documento, [FromQuery] string? placa = null)
+        => ExecutarAsync(async () => Ok(await _service.RejeitarOrcamentoAsync(documento, placa)));
 
     [HttpPost("{id:int}/iniciar-execucao")]
     [Authorize(Roles = Administrador)]

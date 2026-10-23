@@ -6,7 +6,8 @@ public interface IOrdemServicoService
 {
     Task<IEnumerable<OrdemServicoDto>> ObterTodosAsync();
 
-    Task<OrdemServicoDto?> ObterPorIdAsync(int id);
+    /// <summary>Ordens de Serviço do cliente identificado pelo CPF/CNPJ (com ou sem máscara).</summary>
+    Task<IEnumerable<OrdemServicoDto>> ObterPorDocumentoAsync(string documento);
 
     Task<OrdemServicoDto> CriarAsync(
         CriarOrdemServicoInputDto input);
@@ -35,11 +36,21 @@ public interface IOrdemServicoService
     Task<OrdemServicoDto> DisponibilizarOrcamentoAsync(
         int ordemServicoId);
 
+    /// <summary>
+    /// Aprova o orçamento da OS do cliente (CPF/CNPJ) que está aguardando decisão.
+    /// A placa só é necessária quando o cliente tem mais de uma OS aguardando.
+    /// </summary>
     Task<OrdemServicoDto> AprovarOrcamentoAsync(
-        int ordemServicoId);
+        string documento,
+        string? placa = null);
 
+    /// <summary>
+    /// Rejeita o orçamento da OS do cliente (CPF/CNPJ) que está aguardando decisão.
+    /// A placa só é necessária quando o cliente tem mais de uma OS aguardando.
+    /// </summary>
     Task<OrdemServicoDto> RejeitarOrcamentoAsync(
-        int ordemServicoId);
+        string documento,
+        string? placa = null);
 
     Task<OrdemServicoDto> IniciarExecucaoAsync(
         int ordemServicoId);

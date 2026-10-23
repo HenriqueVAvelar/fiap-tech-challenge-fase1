@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Oficina.Domain.Entities;
 using Oficina.Domain.Interfaces;
+using Oficina.Domain.ValueObjects;
 using Oficina.Infrastructure.Context;
 
 namespace Oficina.Infrastructure.Repositories;
@@ -20,6 +21,21 @@ public class VeiculoRepository : IVeiculoRepository
 
     public async Task<Veiculo?> ObterPorIdAsync(int id)
         => await _context.Veiculos.FindAsync(id);
+        
+    public async Task<Veiculo?> ObterPorPlacaAsync(string placa)
+    {
+        var placaBusca = new Placa(placa);
+
+        return await _context.Veiculos.FirstOrDefaultAsync(v => v.Placa == placaBusca);
+    }
+
+    public async Task<bool> PlacaExisteAsync(string placa, int? ignorarId = null)
+    {
+        var placaBusca = new Placa(placa);
+
+        return await _context.Veiculos.AnyAsync(v =>
+            v.Placa == placaBusca && (ignorarId == null || v.Id != ignorarId));
+    }
 
     public async Task AdicionarAsync(Veiculo veiculo)
     {

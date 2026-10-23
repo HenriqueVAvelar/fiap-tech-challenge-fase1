@@ -1,7 +1,9 @@
 ﻿using Oficina.Application.DTOs.OrdemServico;
 using Oficina.Application.Interfaces;
 using Oficina.Domain.Entities;
+using Oficina.Domain.Enums;
 using Oficina.Domain.Interfaces;
+using Oficina.Domain.ValueObjects;
 
 namespace Oficina.Application.Services;
 
@@ -37,31 +39,40 @@ public class OrdemServicoService : IOrdemServicoService
         return ordens.Select(Mapear);
     }
 
-    public async Task<OrdemServicoDto?> ObterPorIdAsync(int id)
+    public async Task<IEnumerable<OrdemServicoDto>> ObterPorDocumentoAsync(string documento)
     {
-        var ordem = await _ordemServicoRepository.ObterPorIdAsync(id);
+        var doc = new Documento(documento);
 
-        return ordem is null
-            ? null
-            : Mapear(ordem);
+        var cliente = await _clienteRepository.ObterPorDocumentoAsync(doc.Numero);
+
+        if (cliente is null)
+            throw new KeyNotFoundException(
+                $"Cliente com o documento '{doc.Formatado()}' não encontrado.");
+
+        var ordens = await _ordemServicoRepository.ObterPorClienteIdAsync(cliente.Id);
+
+        return ordens.Select(Mapear);
     }
 
     public async Task<OrdemServicoDto> CriarAsync(
         CriarOrdemServicoInputDto input)
     {
+        var documento = new Documento(input.Documento);
+        var placa = new Placa(input.Placa);
+
         var cliente =
-            await _clienteRepository.ObterPorIdAsync(input.ClienteId);
+            await _clienteRepository.ObterPorDocumentoAsync(documento.Numero);
 
         if (cliente is null)
             throw new KeyNotFoundException(
-                $"Cliente {input.ClienteId} não encontrado.");
+                $"Cliente com o documento '{documento.Formatado()}' não encontrado.");
 
         var veiculo =
-            await _veiculoRepository.ObterPorIdAsync(input.VeiculoId);
+            await _veiculoRepository.ObterPorPlacaAsync(placa.Valor);
 
         if (veiculo is null)
             throw new KeyNotFoundException(
-                $"Veículo {input.VeiculoId} não encontrado.");
+                $"Veículo com a placa '{placa.Valor}' não encontrado.");
 
         if (veiculo.ClienteId != cliente.Id)
         {
@@ -217,9 +228,10 @@ public class OrdemServicoService : IOrdemServicoService
     }
 
     public async Task<OrdemServicoDto> AprovarOrcamentoAsync(
-        int ordemServicoId)
+        string documento,
+        string? placa = null)
     {
-        var ordem = await ObterOrdemAsync(ordemServicoId);
+        var ordem = await ObterOrdemAguardandoDecisaoAsync(documento, placa);
 
         ordem.AprovarOrcamento();
 
@@ -229,9 +241,10 @@ public class OrdemServicoService : IOrdemServicoService
     }
 
     public async Task<OrdemServicoDto> RejeitarOrcamentoAsync(
-        int ordemServicoId)
+        string documento,
+        string? placa = null)
     {
-        var ordem = await ObterOrdemAsync(ordemServicoId);
+        var ordem = await ObterOrdemAguardandoDecisaoAsync(documento, placa);
 
         ordem.RejeitarOrcamento();
 
@@ -294,6 +307,50 @@ public class OrdemServicoService : IOrdemServicoService
             throw new InvalidOperationException(
                 $"Estoque insuficiente para '{item.Nome}'. " +
                 $"Saldo: {saldo}; já incluído na OS: {jaIncluida}; solicitado: {quantidade}.");
+    }
+
+    // Localiza a OS do cliente (CPF/CNPJ) cujo orçamento está aguardando a decisão dele.
+    // Se houver mais de uma, a placa do veículo escolhe qual; sem ela, é pedido que seja informada.
+    private async Task<Domain.Entities.OrdemServico> ObterOrdemAguardandoDecisaoAsync(
+        string documento,
+        string? placa)
+    {
+        var doc = new Documento(documento);
+
+        var cliente = await _clienteRepository.ObterPorDocumentoAsync(doc.Numero);
+
+        if (cliente is null)
+            throw new KeyNotFoundException(
+                $"Cliente com o documento '{doc.Formatado()}' não encontrado.");
+
+        var aguardando = (await _ordemServicoRepository.ObterPorClienteIdAsync(cliente.Id))
+            .Where(o => o.Status == EnumsOrdemServico.StatusOrdemServico.AguardandoAprovacao
+                        && o.Orcamento?.Status == EnumsOrcamento.StatusOrcamento.Pendente)
+            .ToList();
+
+        if (!string.IsNullOrWhiteSpace(placa))
+        {
+            var numeroPlaca = new Placa(placa);
+
+            var veiculo = await _veiculoRepository.ObterPorPlacaAsync(numeroPlaca.Valor);
+
+            if (veiculo is null)
+                throw new KeyNotFoundException(
+                    $"Veículo com a placa '{numeroPlaca.Valor}' não encontrado.");
+
+            aguardando = aguardando.Where(o => o.VeiculoId == veiculo.Id).ToList();
+        }
+
+        if (aguardando.Count == 0)
+            throw new InvalidOperationException(
+                "Nenhuma Ordem de Serviço com orçamento aguardando decisão foi encontrada para este cliente.");
+
+        if (aguardando.Count > 1)
+            throw new InvalidOperationException(
+                "O cliente possui mais de uma Ordem de Serviço aguardando decisão. " +
+                "Informe a placa do veículo.");
+
+        return aguardando[0];
     }
 
     private async Task<Domain.Entities.OrdemServico> ObterOrdemAsync(

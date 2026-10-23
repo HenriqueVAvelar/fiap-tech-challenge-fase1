@@ -21,6 +21,12 @@ public class OrdemServicoRepository : IOrdemServicoRepository
     public async Task<OrdemServico?> ObterPorIdAsync(int id)
         => await ComDetalhes().FirstOrDefaultAsync(o => o.Id == id);
 
+    public async Task<IEnumerable<OrdemServico>> ObterPorClienteIdAsync(int clienteId)
+        => await ComDetalhes()
+            .Where(o => o.ClienteId == clienteId)
+            .OrderBy(o => o.Id)
+            .ToListAsync();
+
     public async Task AdicionarAsync(OrdemServico ordemServico)
     {
         await _context.OrdensServico.AddAsync(ordemServico);

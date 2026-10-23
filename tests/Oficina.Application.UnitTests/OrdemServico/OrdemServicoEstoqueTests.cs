@@ -269,6 +269,9 @@ public class OrdemServicoEstoqueTests
         public Task<IEnumerable<Ordem>> ObterTodosAsync()
             => Task.FromResult<IEnumerable<Ordem>>(Itens.ToList());
 
+        public Task<IEnumerable<Ordem>> ObterPorClienteIdAsync(int clienteId)
+            => Task.FromResult<IEnumerable<Ordem>>(Itens.Where(o => o.ClienteId == clienteId).ToList());
+
         public Task<Ordem?> ObterPorIdAsync(int id)
             => Task.FromResult(Itens.FirstOrDefault(o => o.Id == id));
 
@@ -315,12 +318,15 @@ public class OrdemServicoEstoqueTests
     {
         Task<IEnumerable<Cliente>> IClienteRepository.ObterTodosAsync() => throw new NotImplementedException();
         Task<Cliente?> IClienteRepository.ObterPorIdAsync(int id) => throw new NotImplementedException();
+        public Task<Cliente?> ObterPorDocumentoAsync(string numero) => throw new NotImplementedException();
         public Task<bool> DocumentoExisteAsync(string numero, int? ignorarId = null) => throw new NotImplementedException();
         public Task AdicionarAsync(Cliente cliente) => throw new NotImplementedException();
         public Task AtualizarAsync(Cliente cliente) => throw new NotImplementedException();
 
         Task<IEnumerable<Veiculo>> IVeiculoRepository.ObterTodosAsync() => throw new NotImplementedException();
         Task<Veiculo?> IVeiculoRepository.ObterPorIdAsync(int id) => throw new NotImplementedException();
+        public Task<Veiculo?> ObterPorPlacaAsync(string placa) => throw new NotImplementedException();
+        public Task<bool> PlacaExisteAsync(string placa, int? ignorarId = null) => throw new NotImplementedException();
         public Task AdicionarAsync(Veiculo veiculo) => throw new NotImplementedException();
         public Task AtualizarAsync(Veiculo veiculo) => throw new NotImplementedException();
 

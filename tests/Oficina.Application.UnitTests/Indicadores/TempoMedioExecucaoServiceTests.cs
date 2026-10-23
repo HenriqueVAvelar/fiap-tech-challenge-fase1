@@ -175,6 +175,13 @@ public class TempoMedioExecucaoServiceTests
                 null);
         }
 
+        public Task<IEnumerable<Ordem>> ObterPorClienteIdAsync(
+            int clienteId)
+        {
+            return Task.FromResult(
+                _ordens.Where(o => o.ClienteId == clienteId));
+        }
+
         public Task AdicionarAsync(
             Ordem ordemServico)
         {

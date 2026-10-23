@@ -5,8 +5,8 @@ namespace Oficina.Application.DTOs.OrdemServico;
 public class CriarOrdemServicoInputDto
 {
     [Required]
-    public int ClienteId { get; set; }
+    public string Documento { get; set; } = string.Empty;
 
     [Required]
-    public int VeiculoId { get; set; }
+    public string Placa { get; set; } = string.Empty;
 }

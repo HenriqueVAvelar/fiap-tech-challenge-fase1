@@ -26,9 +26,9 @@ public class ClienteService : IClienteService
         return _mapper.Map<IEnumerable<ClienteDto>>(clientes);
     }
 
-    public async Task<ClienteDto?> ObterPorIdAsync(int id)
+    public async Task<ClienteDto?> ObterPorDocumentoAsync(string documento)
     {
-        var cliente = await _repository.ObterPorIdAsync(id);
+        var cliente = await _repository.ObterPorDocumentoAsync(new Documento(documento).Numero);
 
         return cliente is null ? null : _mapper.Map<ClienteDto>(cliente);
     }
@@ -45,31 +45,31 @@ public class ClienteService : IClienteService
         return _mapper.Map<ClienteDto>(cliente);
     }
 
-    public async Task<bool> AtualizarAsync(int id, ClienteInputDto dto)
+    public async Task<bool> AtualizarAsync(string documento, ClienteInputDto dto)
     {
-        var cliente = await _repository.ObterPorIdAsync(id);
+        var cliente = await _repository.ObterPorDocumentoAsync(new Documento(documento).Numero);
 
         if (cliente is null)
             return false;
 
-        var documento = new Documento(dto.Documento);
-        await GarantirDocumentoDisponivelAsync(documento, id);
+        var novoDocumento = new Documento(dto.Documento);
+        await GarantirDocumentoDisponivelAsync(novoDocumento, cliente.Id);
 
-        cliente.Atualizar(dto.Nome, documento);
+        cliente.Atualizar(dto.Nome, novoDocumento);
 
         await _repository.AtualizarAsync(cliente);
 
         return true;
     }
 
-    public async Task<bool> RemoverAsync(int id)
+    public async Task<bool> RemoverAsync(string documento)
     {
-        var cliente = await _repository.ObterPorIdAsync(id);
+        var cliente = await _repository.ObterPorDocumentoAsync(new Documento(documento).Numero);
 
         if (cliente is null)
             return false;
 
-        await _repository.RemoverAsync(id);
+        await _repository.RemoverAsync(cliente.Id);
 
         return true;
     }

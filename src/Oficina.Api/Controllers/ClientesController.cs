@@ -22,13 +22,14 @@ public class ClientesController : ApiControllerBase
     public async Task<IActionResult> GetAll()
         => Ok(await _service.ObterTodosAsync());
 
-    [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById(int id)
-    {
-        var result = await _service.ObterPorIdAsync(id);
+    [HttpGet("{documento}")]
+    public Task<IActionResult> GetByDocumento(string documento)
+        => ExecutarAsync(async () =>
+        {
+            var result = await _service.ObterPorDocumentoAsync(documento);
 
-        return result is null ? NotFound() : Ok(result);
-    }
+            return result is null ? NotFound() : Ok(result);
+        });
 
     [HttpPost]
     [Authorize(Roles = nameof(EnumsUsuario.PerfilUsuario.Administrador))]
@@ -37,18 +38,18 @@ public class ClientesController : ApiControllerBase
         {
             var criado = await _service.CriarAsync(cliente);
 
-            return CreatedAtAction(nameof(GetById), new { id = criado.Id }, criado);
+            return CreatedAtAction(nameof(GetByDocumento), new { documento = criado.Documento }, criado);
         });
 
-    [HttpPut("{id:int}")]
+    [HttpPut("{documento}")]
     [Authorize(Roles = nameof(EnumsUsuario.PerfilUsuario.Administrador))]
-    public Task<IActionResult> Update(int id, [FromBody] ClienteInputDto cliente)
+    public Task<IActionResult> Update(string documento, [FromBody] ClienteInputDto cliente)
         => ExecutarAsync(async () =>
-            await _service.AtualizarAsync(id, cliente) ? NoContent() : NotFound());
+            await _service.AtualizarAsync(documento, cliente) ? NoContent() : NotFound());
 
-    [HttpDelete("{id:int}")]
+    [HttpDelete("{documento}")]
     [Authorize(Roles = nameof(EnumsUsuario.PerfilUsuario.Administrador))]
-    public Task<IActionResult> Delete(int id)
+    public Task<IActionResult> Delete(string documento)
         => ExecutarAsync(async () =>
-            await _service.RemoverAsync(id) ? NoContent() : NotFound());
+            await _service.RemoverAsync(documento) ? NoContent() : NotFound());
 }

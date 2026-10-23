@@ -28,9 +28,9 @@ public class VeiculoService : IVeiculoService
         return _mapper.Map<IEnumerable<VeiculoDto>>(veiculos);
     }
 
-    public async Task<VeiculoDto?> ObterPorIdAsync(int id)
+    public async Task<VeiculoDto?> ObterPorPlacaAsync(string placa)
     {
-        var veiculo = await _repository.ObterPorIdAsync(id);
+        var veiculo = await _repository.ObterPorPlacaAsync(new Placa(placa).Valor);
 
         return veiculo is null ? null : _mapper.Map<VeiculoDto>(veiculo);
     }
@@ -39,24 +39,30 @@ public class VeiculoService : IVeiculoService
     {
         await GarantirClienteExisteAsync(dto.ClienteId);
 
-        var veiculo = new Veiculo(dto.ClienteId, new Placa(dto.Placa), dto.Marca.Trim(), dto.Modelo.Trim(), dto.Ano);
+        var placa = new Placa(dto.Placa);
+        await GarantirPlacaDisponivelAsync(placa);
+
+        var veiculo = new Veiculo(dto.ClienteId, placa, dto.Marca.Trim(), dto.Modelo.Trim(), dto.Ano);
 
         await _repository.AdicionarAsync(veiculo);
 
         return _mapper.Map<VeiculoDto>(veiculo);
     }
 
-    public async Task<bool> AtualizarAsync(int id, VeiculoInputDto dto)
+    public async Task<bool> AtualizarAsync(string placa, VeiculoInputDto dto)
     {
-        var veiculo = await _repository.ObterPorIdAsync(id);
+        var veiculo = await _repository.ObterPorPlacaAsync(new Placa(placa).Valor);
 
         if (veiculo is null)
             return false;
 
         await GarantirClienteExisteAsync(dto.ClienteId);
 
+        var novaPlaca = new Placa(dto.Placa);
+        await GarantirPlacaDisponivelAsync(novaPlaca, veiculo.Id);
+
         veiculo.ClienteId = dto.ClienteId;
-        veiculo.Placa = new Placa(dto.Placa);
+        veiculo.Placa = novaPlaca;
         veiculo.Marca = dto.Marca.Trim();
         veiculo.Modelo = dto.Modelo.Trim();
         veiculo.Ano = dto.Ano;
@@ -66,18 +72,24 @@ public class VeiculoService : IVeiculoService
         return true;
     }
 
-    public async Task<bool> RemoverAsync(int id)
+    public async Task<bool> RemoverAsync(string placa)
     {
-        var veiculo = await _repository.ObterPorIdAsync(id);
+        var veiculo = await _repository.ObterPorPlacaAsync(new Placa(placa).Valor);
 
         if (veiculo is null)
             return false;
 
-        await _repository.RemoverAsync(id);
+        await _repository.RemoverAsync(veiculo.Id);
 
         return true;
     }
     #endregion
+
+    private async Task GarantirPlacaDisponivelAsync(Placa placa, int? ignorarId = null)
+    {
+        if (await _repository.PlacaExisteAsync(placa.Valor, ignorarId))
+            throw new InvalidOperationException($"Já existe um veículo com a placa '{placa.Valor}'.");
+    }
 
     private async Task GarantirClienteExisteAsync(int clienteId)
     {

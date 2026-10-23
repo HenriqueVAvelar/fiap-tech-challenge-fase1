@@ -21,14 +21,15 @@ public class VeiculosController : ApiControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll()
         => Ok(await _service.ObterTodosAsync());
+        
+    [HttpGet("{placa}")]
+    public Task<IActionResult> GetByPlaca(string placa)
+        => ExecutarAsync(async () =>
+        {
+            var result = await _service.ObterPorPlacaAsync(placa);
 
-    [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById(int id)
-    {
-        var result = await _service.ObterPorIdAsync(id);
-
-        return result is null ? NotFound() : Ok(result);
-    }
+            return result is null ? NotFound() : Ok(result);
+        });
 
     [HttpPost]
     [Authorize(Roles = nameof(EnumsUsuario.PerfilUsuario.Administrador))]
@@ -37,18 +38,18 @@ public class VeiculosController : ApiControllerBase
         {
             var criado = await _service.CriarAsync(veiculo);
 
-            return CreatedAtAction(nameof(GetById), new { id = criado.Id }, criado);
+            return CreatedAtAction(nameof(GetByPlaca), new { placa = criado.Placa }, criado);
         });
 
-    [HttpPut("{id:int}")]
+    [HttpPut("{placa}")]
     [Authorize(Roles = nameof(EnumsUsuario.PerfilUsuario.Administrador))]
-    public Task<IActionResult> Update(int id, [FromBody] VeiculoInputDto veiculo)
+    public Task<IActionResult> Update(string placa, [FromBody] VeiculoInputDto veiculo)
         => ExecutarAsync(async () =>
-            await _service.AtualizarAsync(id, veiculo) ? NoContent() : NotFound());
+            await _service.AtualizarAsync(placa, veiculo) ? NoContent() : NotFound());
 
-    [HttpDelete("{id:int}")]
+    [HttpDelete("{placa}")]
     [Authorize(Roles = nameof(EnumsUsuario.PerfilUsuario.Administrador))]
-    public Task<IActionResult> Delete(int id)
+    public Task<IActionResult> Delete(string placa)
         => ExecutarAsync(async () =>
-            await _service.RemoverAsync(id) ? NoContent() : NotFound());
+            await _service.RemoverAsync(placa) ? NoContent() : NotFound());
 }

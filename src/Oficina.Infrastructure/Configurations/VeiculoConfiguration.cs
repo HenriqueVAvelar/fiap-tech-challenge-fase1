@@ -18,6 +18,10 @@ public class VeiculoConfiguration : IEntityTypeConfiguration<Veiculo>
             .HasMaxLength(7)
             .HasConversion(placa => placa.Valor, valor => new Placa(valor));
 
+        // Uma placa não pode pertencer a dois veículos
+        builder.HasIndex(v => v.Placa)
+            .IsUnique();
+
         builder.Property(v => v.Marca)
             .IsRequired()
             .HasMaxLength(100);

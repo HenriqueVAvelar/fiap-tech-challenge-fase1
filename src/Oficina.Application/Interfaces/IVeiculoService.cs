@@ -6,11 +6,11 @@ public interface IVeiculoService
 {
     Task<IEnumerable<VeiculoDto>> ObterTodosAsync();
 
-    Task<VeiculoDto?> ObterPorIdAsync(int id);
+    Task<VeiculoDto?> ObterPorPlacaAsync(string placa);
 
     Task<VeiculoDto> CriarAsync(VeiculoInputDto veiculo);
 
-    Task<bool> AtualizarAsync(int id, VeiculoInputDto veiculo);
+    Task<bool> AtualizarAsync(string placa, VeiculoInputDto veiculo);
 
-    Task<bool> RemoverAsync(int id);
+    Task<bool> RemoverAsync(string placa);
 }

@@ -355,6 +355,9 @@ namespace Oficina.Infrastructure.Migrations
 
                     b.HasIndex("ClienteId");
 
+                    b.HasIndex("Placa")
+                        .IsUnique();
+
                     b.ToTable("Veiculos", (string)null);
                 });
 

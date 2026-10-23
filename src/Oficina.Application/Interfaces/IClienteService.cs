@@ -6,11 +6,11 @@ public interface IClienteService
 {
     Task<IEnumerable<ClienteDto>> ObterTodosAsync();
 
-    Task<ClienteDto?> ObterPorIdAsync(int id);
+    Task<ClienteDto?> ObterPorDocumentoAsync(string documento);
 
     Task<ClienteDto> CriarAsync(ClienteInputDto cliente);
 
-    Task<bool> AtualizarAsync(int id, ClienteInputDto cliente);
+    Task<bool> AtualizarAsync(string documento, ClienteInputDto cliente);
 
-    Task<bool> RemoverAsync(int id);
+    Task<bool> RemoverAsync(string documento);
 }

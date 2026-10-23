@@ -21,6 +21,9 @@ public class ClienteRepository : IClienteRepository
     public async Task<Cliente?> ObterPorIdAsync(int id)
         => await _context.Clientes.FindAsync(id);
 
+    public async Task<Cliente?> ObterPorDocumentoAsync(string numero)
+        => await _context.Clientes.FirstOrDefaultAsync(c => c.Documento.Numero == numero);
+
     public async Task<bool> DocumentoExisteAsync(string numero, int? ignorarId = null)
         => await _context.Clientes.AnyAsync(c =>
             c.Documento.Numero == numero && (ignorarId == null || c.Id != ignorarId));

@@ -42,6 +42,9 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
+// Aplica migrations automaticamente
+await app.Services.ApplyMigrationsAsync();
+
 // Cria o primeiro Administrador (seção "AdminSeed" da configuração), se ainda não existir
 await app.Services.SeedAdminAsync();
 

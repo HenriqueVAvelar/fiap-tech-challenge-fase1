@@ -45,7 +45,7 @@ var app = builder.Build();
 // Cria o primeiro Administrador (seção "AdminSeed" da configuração), se ainda não existir
 await app.Services.SeedAdminAsync();
 
-// Cria cliente, veículo e OS de demonstração (seção "DemoData" da configuração), se habilitado
+// Cria as peças e insumos padrão do catálogo e, se habilitado (seção "DemoData"), cliente e veículo de demonstração
 await app.Services.SeedDadosDemoAsync();
 
 // Configure the HTTP request pipeline.

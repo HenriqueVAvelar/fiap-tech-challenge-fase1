@@ -413,10 +413,6 @@ O seed prepara dados para exploração da API, incluindo:
 - Veículo.
 - Serviço.
 - Item de catálogo e estoque.
-- Ordem de Serviço com serviço e peça incluídos.
-
-Em uma base nova, a OS de demonstração é avançada para `EmDiagnostico` para permitir a inclusão da peça.
-
 Consulte os IDs retornados pela API; não presuma valores fixos.
 
 Para desabilitar os dados de demonstração, configure `DemoData:Habilitado` como `false` ou utilize a variável de ambiente `DemoData__Habilitado=false`.

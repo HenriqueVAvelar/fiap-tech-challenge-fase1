@@ -26,9 +26,10 @@ public class Cliente
     public void Atualizar(string nome, Documento documento)
     {
         ValidarNome(nome);
+        ArgumentNullException.ThrowIfNull(documento);
 
         Nome = nome.Trim();
-        Documento = documento ?? throw new ArgumentNullException(nameof(documento));
+        Documento = documento;
     }
 
     private static void ValidarNome(string nome)

@@ -158,6 +158,7 @@ O esquema do banco é versionado pelas migrations em `src/Oficina.Infrastructure
 | `tests/Oficina.Domain.UnitTests/` | Testes do domínio |
 | `tests/Oficina.Application.UnitTests/` | Testes da aplicação |
 | `tests/Oficina.Infrastructure.UnitTests/` | Testes de infraestrutura |
+| `tests/Oficina.Api.IntegrationTests/` | Testes de integração da API (HTTP, JWT e PostgreSQL reais) |
 | `docs/ddd/` | Documentação DDD e diagramas exportados |
 | `docs/architecture/` | Arquitetura, ADR e diagramas C4 |
 | `docs/requirements/` | Requisitos |
@@ -449,19 +450,19 @@ Para uma nova OS:
 8. Concluir o diagnóstico com `POST /OrdensServico/{id}/concluir-diagnostico`.
 9. Gerar o orçamento com `POST /OrdensServico/{id}/gerar-orcamento`.
 10. Disponibilizar o orçamento com `POST /OrdensServico/{id}/disponibilizar-orcamento`.
-11. Registrar a aprovação com `POST /OrdensServico/{id}/aprovar-orcamento`.
+11. O cliente registra a aprovação com `POST /OrdensServico/{documento}/aprovar-orcamento` (CPF/CNPJ do cliente, sem token). Se ele tiver mais de uma OS aguardando decisão, informe `?placa=`.
 12. Iniciar a execução com `POST /OrdensServico/{id}/iniciar-execucao`.
 13. Registrar os itens consumidos com `POST /OrdensServico/{id}/consumir-pecas-insumos`.
 14. Finalizar com `POST /OrdensServico/{id}/finalizar`.
 15. Registrar a entrega com `POST /OrdensServico/{id}/entregar`.
 
-A rejeição pode ser registrada por `POST /OrdensServico/{id}/rejeitar-orcamento`, impedindo o início da execução sem aprovação.
+A rejeição é registrada por `POST /OrdensServico/{documento}/rejeitar-orcamento` (também com `?placa=` quando necessário), impedindo o início da execução sem aprovação.
 
-O andamento pode ser consultado com `GET /OrdensServico/{id}`.
+O cliente acompanha o andamento, sem token, com `GET /OrdensServico/{documento}`, que lista as OS dele. A listagem administrativa de todas as OS é `GET /OrdensServico` (perfil Administrador).
 
 ## Testes automatizados
 
-Executar todos os testes:
+Executar todos os testes (inclui os de integração, que exigem o Docker em execução):
 
 ```bash
 dotnet test Oficina.sln --configuration Release
@@ -473,7 +474,33 @@ Executar um projeto específico:
 dotnet test tests/Oficina.Domain.UnitTests/Oficina.Domain.UnitTests.csproj
 ```
 
-Os projetos existentes incluem testes de regras de OS, consumo e estoque, documentos, usuários, autenticação, indicadores, mapeamentos e componentes de infraestrutura.
+Os projetos unitários incluem testes de regras de OS, consumo e estoque, documentos, usuários, autenticação, indicadores, mapeamentos e componentes de infraestrutura.
+
+### Testes de integração
+
+O projeto `tests/Oficina.Api.IntegrationTests` exercita a API de ponta a ponta: cada teste envia requisições HTTP aos endpoints reais (rotas, validação, autenticação JWT, autorização por perfil, serviços, EF Core e banco) e confere o status, o `Content-Type` e o corpo da resposta.
+
+- A API sobe em memória com `WebApplicationFactory`.
+- O banco é um **PostgreSQL 16.9 real**, criado em container pelo Testcontainers (mesma versão do `compose.yaml`), com o esquema aplicado pelas migrations do projeto. Os testes não dependem do banco da execução local.
+- **Pré-requisito: Docker em execução.** Na primeira execução a imagem do PostgreSQL é baixada.
+- Cada teste cria os próprios dados (CPF, CNPJ e placas válidos e únicos), sem depender de ordem de execução.
+- Cada requisição e resposta HTTP (método, rota, cabeçalhos, corpo e status) é impressa no console, no estilo do log do REST-assured. Senhas são mascaradas e o token é abreviado. Para desligar, defina `HTTP_LOG=0`; no CI (`CI=true`) o log já vem desligado.
+- Quando uma verificação de status falha, a mensagem traz a requisição e o corpo da resposta.
+
+```bash
+dotnet test tests/Oficina.Api.IntegrationTests/Oficina.Api.IntegrationTests.csproj
+```
+
+Se o log das requisições não aparecer no terminal, acrescente `--logger "console;verbosity=detailed"`. Em alguns terminais essa opção faz as linhas do xUnit e do Testcontainers saírem em duplicidade; é só a saída repetida, os testes não rodam duas vezes.
+
+Fluxos cobertos:
+
+| Classe | O que valida |
+| --- | --- |
+| `AutenticacaoIntegrationTests` | Login e emissão do JWT, credenciais inválidas, acesso sem token ou com token inválido (401) e restrição por perfil (403) |
+| `ClientesEVeiculosIntegrationTests` | CRUD de clientes e veículos, validação de CPF/CNPJ e de placa (formatos antigo e Mercosul), duplicidade e referências inexistentes |
+| `ServicosEEstoqueIntegrationTests` | CRUD de serviços e do catálogo de peças e insumos, entradas e baixas de estoque, saldo insuficiente |
+| `OrdemServicoIntegrationTests` | Fluxo completo da OS (criação, diagnóstico, serviços, peças, orçamento, aprovação pelo cliente, execução, consumo com baixa de estoque, finalização, entrega), rejeição do orçamento, regras de transição de status, consulta do cliente pela API, tudo-ou-nada no consumo de peças e tempo médio de execução |
 
 ### Cobertura
 
@@ -487,7 +514,7 @@ Os arquivos `coverage.cobertura.xml` são gerados em subdiretórios de `TestResu
 
 A exigência da Fase 1 é cobertura mínima de **80% nos domínios críticos**. A existência do coletor não comprova esse percentual: o resultado deve ser medido e apresentado como evidência da entrega.
 
-Na versão documentada, não há uma suíte de integração dos fluxos principais identificada no repositório. Essa é uma pendência em relação aos requisitos da fase.
+Os testes de integração entram na mesma coleta de cobertura, pois fazem parte da solução.
 
 ## Integração contínua
 
@@ -495,7 +522,7 @@ O workflow em [.github/workflows/ci.yml](.github/workflows/ci.yml) executa:
 
 1. Restauração das dependências.
 2. Build em Release.
-3. Testes automatizados.
+3. Testes automatizados, incluindo os de integração (o runner `ubuntu-24.04` já possui Docker para o Testcontainers).
 
 O pipeline é acionado em Pull Requests para `main`, pushes em `main` e execução manual.
 
@@ -546,7 +573,7 @@ O PDF de entrega deve informar a branch e o hash exatos, com links para o reposi
 - Publicar o link do vídeo, com duração máxima de 15 minutos.
 - Preencher a identificação do grupo e dos integrantes.
 - Substituir o marcador do link público de modelagem.
-- Implementar e apresentar testes de integração dos fluxos principais.
+- Apresentar a execução dos testes de integração no vídeo.
 - Medir e comprovar cobertura mínima de 80% nos domínios críticos.
 - Incluir o resultado da análise de vulnerabilidades.
 - Consolidar a configuração do Docker para execução completa.

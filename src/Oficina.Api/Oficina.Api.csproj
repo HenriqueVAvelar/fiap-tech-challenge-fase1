@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <InternalsVisibleTo Include="Oficina.Api.IntegrationTests" />
     <ProjectReference Include="..\Oficina.Application\Oficina.Application.csproj" />
     <ProjectReference Include="..\Oficina.Infrastructure\Oficina.Infrastructure.csproj" />
   </ItemGroup>

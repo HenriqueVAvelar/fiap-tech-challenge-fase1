@@ -502,6 +502,60 @@ Fluxos cobertos:
 | `ServicosEEstoqueIntegrationTests` | CRUD de serviços e do catálogo de peças e insumos, entradas e baixas de estoque, saldo insuficiente |
 | `OrdemServicoIntegrationTests` | Fluxo completo da OS (criação, diagnóstico, serviços, peças, orçamento, aprovação pelo cliente, execução, consumo com baixa de estoque, finalização, entrega), rejeição do orçamento, regras de transição de status, consulta do cliente pela API, tudo-ou-nada no consumo de peças e tempo médio de execução |
 
+### Executar os testes por partes
+
+Não é preciso rodar tudo de uma vez: dá para executar um projeto, uma classe ou um único teste e validar aos poucos.
+
+**Por projeto:**
+
+```bash
+dotnet test tests/Oficina.Domain.UnitTests
+dotnet test tests/Oficina.Application.UnitTests
+dotnet test tests/Oficina.Infrastructure.UnitTests
+dotnet test tests/Oficina.Api.IntegrationTests
+```
+
+**Por classe de teste** (filtro `FullyQualifiedName~`, que significa "contém"):
+
+```bash
+dotnet test tests/Oficina.Api.IntegrationTests --filter "FullyQualifiedName~AutenticacaoIntegrationTests"
+dotnet test tests/Oficina.Api.IntegrationTests --filter "FullyQualifiedName~ClientesEVeiculosIntegrationTests"
+dotnet test tests/Oficina.Api.IntegrationTests --filter "FullyQualifiedName~ServicosEEstoqueIntegrationTests"
+dotnet test tests/Oficina.Api.IntegrationTests --filter "FullyQualifiedName~OrdemServicoIntegrationTests"
+```
+
+**Um único teste**, pelo nome (ou por parte dele):
+
+```bash
+dotnet test tests/Oficina.Api.IntegrationTests --filter "FullyQualifiedName~FluxoCompleto_DaRecepcaoAteAEntrega"
+```
+
+**Vários testes de um mesmo assunto**, por um trecho do nome:
+
+```bash
+dotnet test tests/Oficina.Api.IntegrationTests --filter "FullyQualifiedName~Login_"
+```
+
+**Listar os testes disponíveis**, sem executá-los:
+
+```bash
+dotnet test tests/Oficina.Api.IntegrationTests --list-tests
+```
+
+Alguns testes úteis para começar:
+
+| Filtro | O que demonstra |
+| --- | --- |
+| `Login_ComCredenciaisValidas_RetornaTokenJwt` | Autenticação JWT |
+| `Mecanico_TentaCadastrarCliente_Retorna403` | Restrição por perfil |
+| `Cliente_CicloCompletoDoCrud` | CRUD de clientes |
+| `Veiculo_ComPlacaInvalida_Retorna400` | Validação de placa |
+| `FluxoCompleto_DaRecepcaoAteAEntrega` | Fluxo completo da OS, do recebimento à entrega |
+| `RejeitarOrcamento_ImpedeAExecucao` | Rejeição do orçamento |
+| `RegistrarConsumo_ComEstoqueInsuficienteEmUmItem_NaoAlteraNada` | Transação tudo ou nada no consumo de peças |
+
+Cada execução dos testes de integração sobe e descarta o próprio container PostgreSQL, então o Docker precisa estar em execução. Se a API estiver rodando em outro terminal, pare-a antes: ela trava as DLLs e impede o `dotnet test` de recompilar.
+
 ### Cobertura
 
 Para coletar cobertura com o Coverlet:

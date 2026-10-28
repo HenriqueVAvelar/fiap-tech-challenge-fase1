@@ -5,9 +5,9 @@ services:
     ports:
       - 8080:8080
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8080
-      - ConnectionStrings__default=${CONNECTION_STRING}
+      - ConnectionStrings__DefaultConnection=${CONNECTION_STRING}
     depends_on:
       db:
         condition: service_healthy
@@ -18,6 +18,7 @@ services:
     ports:
       - 5432:5432
     environment:
+      POSTGRES_DB: oficina
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -27,6 +28,33 @@ services:
       retries: 5
       start_period: 30s
       timeout: 10s
+  sonarqube:
+    image: sonarqube:latest
+    container_name: sonarqube_app
+    ports:
+      - 9000:9000
+    environment:
+      - SONARQUBE_JDBC_USERNAME=sonar
+      - SONARQUBE_JDBC_PASSWORD=sonar
+      - SONARQUBE_JDBC_URL=jdbc:postgresql://sonar_db:5432/sonar
+    depends_on:
+      sonar_db:
+        condition: service_started
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+  sonar_db:
+    image: postgres:16.9-bullseye
+    container_name: sonar_postgres
+    environment:
+      POSTGRES_USER: sonar
+      POSTGRES_PASSWORD: sonar
+      POSTGRES_DB: sonar
+    volumes:
+      - sonar_db_data:/var/lib/postgresql/data
 volumes:
   postgres_data:
+  sonar_db_data:
+  sonarqube_data:
+  sonarqube_extensions:
     

@@ -1,4 +1,5 @@
 using Microsoft.OpenApi.Models;
+using OpenTelemetry.Metrics;
 using Oficina.Api.Extensions;
 using Oficina.Application.Extensions;
 using Oficina.Infrastructure.Extensions;
@@ -7,11 +8,18 @@ using Oficina.Infrastructure.Seed;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Inje��o de Depend�ncias das Camadas
+// Injeção de Dependências das Camadas
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 
-// Configura��es Globais da API
+// Configurações de Observabilidade (OpenTelemetry)
+builder.Services.AddOpenTelemetry()
+    .WithMetrics(metrics => metrics
+        .AddAspNetCoreInstrumentation()
+        .AddHttpClientInstrumentation()
+        .AddPrometheusExporter());
+
+// Configurações Globais da API
 builder.Services.AddControllers()
     .AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter()));
 builder.Services.AddEndpointsApiExplorer();
@@ -41,6 +49,9 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 var app = builder.Build();
+
+// Expor endpoint de métricas para o Prometheus
+app.UseOpenTelemetryPrometheusScrapingEndpoint();
 
 // Aplica migrations automaticamente
 await app.Services.ApplyMigrationsAsync();

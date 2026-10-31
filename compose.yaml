@@ -2,6 +2,8 @@ services:
   web_api:
     container_name: oficina_api_app
     build: .
+    env_file:
+      - .env
     ports:
       - 8080:8080
     environment:
@@ -55,7 +57,7 @@ services:
       - 9000:9000
     environment:
       - SONARQUBE_JDBC_USERNAME=sonar
-      - SONARQUBE_JDBC_PASSWORD=sonar
+      - SONARQUBE_JDBC_PASSWORD=${SONARQUBE_JDBC_PASSWORD}
       - SONARQUBE_JDBC_URL=jdbc:postgresql://sonar_db:5432/sonar
     depends_on:
       sonar_db:
@@ -69,7 +71,7 @@ services:
     container_name: sonar_postgres
     environment:
       - POSTGRES_USER=sonar
-      - POSTGRES_PASSWORD=sonar
+      - POSTGRES_PASSWORD=${SONARQUBE_POSTGRES_PASSWORD}
       - POSTGRES_DB=sonar
     volumes:
       - sonar_db_data:/var/lib/postgresql/data

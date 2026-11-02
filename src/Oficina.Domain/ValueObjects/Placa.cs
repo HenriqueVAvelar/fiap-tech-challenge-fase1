@@ -5,10 +5,10 @@ namespace Oficina.Domain.ValueObjects;
 public class Placa
 {
     private static readonly Regex FormatoAntigo =
-        new("^[A-Z]{3}[0-9]{4}$", RegexOptions.Compiled);
+        new("^[A-Z]{3}[0-9]{4}$", RegexOptions.Compiled, TimeSpan.FromMilliseconds(100));
 
     private static readonly Regex FormatoMercosul =
-        new("^[A-Z]{3}[0-9][A-Z][0-9]{2}$", RegexOptions.Compiled);
+        new("^[A-Z]{3}[0-9][A-Z][0-9]{2}$", RegexOptions.Compiled, TimeSpan.FromMilliseconds(100));
 
     public string Valor { get; }
 

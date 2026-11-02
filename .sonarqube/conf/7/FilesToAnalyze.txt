@@ -1,0 +1,18 @@
+﻿D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Api.IntegrationTests\AutenticacaoIntegrationTests.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Api.IntegrationTests\ClientesEVeiculosIntegrationTests.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Api.IntegrationTests\OrdemServicoIntegrationTests.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Api.IntegrationTests\ServicosEEstoqueIntegrationTests.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Api.IntegrationTests\Support\ApiCollection.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Api.IntegrationTests\Support\DadosDeTeste.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Api.IntegrationTests\Support\HttpLogHandler.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Api.IntegrationTests\Support\IntegrationTestBase.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Api.IntegrationTests\Support\Json.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Api.IntegrationTests\Support\LogNomeDoTesteAttribute.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Api.IntegrationTests\Support\OficinaApiFactory.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Api.IntegrationTests\Support\RespostaApiExtensions.cs
+C:\Users\rodol\.nuget\packages\microsoft.net.test.sdk\17.8.0\build\netcoreapp3.1\Microsoft.NET.Test.Sdk.Program.cs
+C:\Users\rodol\.nuget\packages\microsoft.testplatform.testhost\17.8.0\build\netcoreapp3.1\x64\testhost.exe
+C:\Users\rodol\.nuget\packages\microsoft.testplatform.testhost\17.8.0\build\netcoreapp3.1\x64\testhost.dll
+C:\Users\rodol\.nuget\packages\xunit.runner.visualstudio\2.5.3\build\net6.0\xunit.runner.visualstudio.dotnetcore.testadapter.dll
+C:\Users\rodol\.nuget\packages\xunit.runner.visualstudio\2.5.3\build\net6.0\xunit.runner.reporters.netcoreapp10.dll
+C:\Users\rodol\.nuget\packages\xunit.runner.visualstudio\2.5.3\build\net6.0\xunit.runner.utility.netcoreapp10.dll

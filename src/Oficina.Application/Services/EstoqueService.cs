@@ -57,7 +57,7 @@ public class EstoqueService : IEstoqueService
             return false;
 
         if (dto.Quantidade < 0)
-            throw new ArgumentOutOfRangeException(nameof(dto.Quantidade), "A quantidade não pode ser negativa.");
+            throw new ArgumentOutOfRangeException(nameof(dto), "A quantidade não pode ser negativa.");
 
         estoque.Quantidade = dto.Quantidade;
 

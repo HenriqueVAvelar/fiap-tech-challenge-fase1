@@ -82,9 +82,9 @@ public class ServicoService : IServicoService
     private static void Validar(ServicoInputDto dto)
     {
         if (string.IsNullOrWhiteSpace(dto.Descricao))
-            throw new ArgumentException("A descrição do serviço é obrigatória.", nameof(dto.Descricao));
+            throw new ArgumentException("A descrição do serviço é obrigatória.", nameof(dto));
 
         if (dto.Valor < 0)
-            throw new ArgumentException("O valor do serviço não pode ser negativo.", nameof(dto.Valor));
+            throw new ArgumentException("O valor do serviço não pode ser negativo.", nameof(dto));
     }
 }

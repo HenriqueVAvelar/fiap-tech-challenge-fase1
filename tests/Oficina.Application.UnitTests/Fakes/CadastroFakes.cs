@@ -77,7 +77,13 @@ internal sealed class FakeClienteRepository : IClienteRepository
         return Task.CompletedTask;
     }
 
-    public Task AtualizarAsync(Cliente cliente) => Task.CompletedTask;
+    public int Atualizacoes { get; private set; }
+
+    public Task AtualizarAsync(Cliente cliente)
+    {
+        Atualizacoes++;
+        return Task.CompletedTask;
+    }
 
     public Task RemoverAsync(int id)
     {
@@ -108,7 +114,13 @@ internal sealed class FakeVeiculoRepository : IVeiculoRepository
         return Task.CompletedTask;
     }
 
-    public Task AtualizarAsync(Veiculo veiculo) => Task.CompletedTask;
+    public int Atualizacoes { get; private set; }
+
+    public Task AtualizarAsync(Veiculo veiculo)
+    {
+        Atualizacoes++;
+        return Task.CompletedTask;
+    }
 
     public Task RemoverAsync(int id)
     {
@@ -133,7 +145,13 @@ internal sealed class FakeServicoRepository : IServicoRepository
         return Task.CompletedTask;
     }
 
-    public Task AtualizarAsync(Servico servico) => Task.CompletedTask;
+    public int Atualizacoes { get; private set; }
+
+    public Task AtualizarAsync(Servico servico)
+    {
+        Atualizacoes++;
+        return Task.CompletedTask;
+    }
 
     public Task RemoverAsync(int id)
     {
@@ -161,7 +179,13 @@ internal sealed class FakeEstoqueRepository : IEstoqueRepository
         return Task.CompletedTask;
     }
 
-    public Task AtualizarAsync(Estoque estoque) => Task.CompletedTask;
+    public int Atualizacoes { get; private set; }
+
+    public Task AtualizarAsync(Estoque estoque)
+    {
+        Atualizacoes++;
+        return Task.CompletedTask;
+    }
 
     public Task RemoverAsync(int id)
     {

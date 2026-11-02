@@ -187,6 +187,7 @@ public class OrdemServicoPorDocumentoTests
         await _service.RejeitarOrcamentoAsync(CpfMaria);
 
         Assert.Equal(EnumsOrcamento.StatusOrcamento.Rejeitado, ordem.Orcamento!.Status);
+        Assert.Equal(1, _ordens.Atualizacoes);
     }
 
     [Fact]

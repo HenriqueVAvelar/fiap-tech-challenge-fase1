@@ -590,8 +590,6 @@ A configuração atual não publica relatório de cobertura nem aplica uma barre
 
 O diretório [docs/security](docs/security/) está reservado para documentação e evidências de segurança.
 
-**Relatório de análise de vulnerabilidades:** pendente de inclusão.
-
 ## Entrega da Fase 1
 
 - **Curso:** SOAT — Software Architecture.
@@ -617,8 +615,6 @@ O PDF de entrega deve informar a branch e o hash exatos, com links para o reposi
 - Substituir o marcador do link público de modelagem.
 - Apresentar a execução dos testes de integração no vídeo.
 - Medir e comprovar cobertura mínima de 80% nos domínios críticos.
-- Incluir o resultado da análise de vulnerabilidades.
-- Consolidar a configuração do Docker para execução completa.
 - Validar a execução a partir de um clone e de um banco novos.
 - Confirmar que o repositório estará público durante a correção.
 - Confirmar a proteção da `main` e a entrada de alterações por Pull Request.

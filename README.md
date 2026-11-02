@@ -217,14 +217,23 @@ No Bash:
 cp .env.example .env
 ```
 
-Para acompanhar este guia, configure o `.env` com:
+Abra o arquivo `.env` copiado e preencha os valores locais necessários. Utilize o `.env.example` como referência de estrutura.
+
+Exemplo de formato:
 
 ```dotenv
-POSTGRES_PASSWORD=postgres
-CONNECTION_STRING=Host=db;Port=5432;Database=oficina;Username=postgres;Password=postgres
+POSTGRES_PASSWORD=<senha_local>
+CONNECTION_STRING=Host=db;Port=5432;Database=oficina;Username=postgres;Password=<senha_local>
+
+SONARQUBE_JDBC_PASSWORD=<senha_local_sonarqube>
+SONARQUBE_POSTGRES_PASSWORD=<senha_local_sonarqube>
+
+ConnectionStrings__DefaultConnection=Host=localhost;Port=5432;Database=oficina;Username=postgres;Password=<senha_local>
+Jwt__Secret=<chave_jwt_local_com_32_ou_mais_caracteres>
+AdminSeed__Senha=<senha_admin_local>
 ```
 
-Esses valores são exclusivos para desenvolvimento local.
+O arquivo `.env` é local e não deve ser versionado. Ele já está incluído no `.gitignore`.
 
 Inicie somente o banco:
 
@@ -272,11 +281,7 @@ export ASPNETCORE_ENVIRONMENT=Development
 export DOTNET_ENVIRONMENT=Development
 ```
 
-A configuração de desenvolvimento utiliza:
-
-```text
-Host=localhost;Port=5432;Database=oficina;Username=postgres;Password=postgres
-```
+A API executada fora do Docker utiliza o valor de `ConnectionStrings__DefaultConnection` definido no `.env`, normalmente apontando para `localhost`. Dentro do Docker Compose, a variável `CONNECTION_STRING` utiliza o serviço `db` como host.
 
 Aplique as migrations:
 
@@ -313,21 +318,9 @@ Nesse perfil, o Swagger também fica disponível em https://localhost:7064/swagg
 
 O repositório contém um `Dockerfile` e um `compose.yaml`.
 
-Na configuração atual, o Compose utiliza `Production` e passa a conexão em `ConnectionStrings__default`, enquanto a aplicação lê `ConnectionStrings__DefaultConnection`. Além disso, a chave JWT precisa ter pelo menos 32 caracteres.
+Na configuração atual, o Compose executa a API em `Development`, carrega o arquivo `.env` e utiliza as variáveis nele definidas para conexão com o PostgreSQL, chave JWT e senha do usuário administrador.
 
-Para executar a demonstração local com Swagger, crie na raiz um arquivo `compose.override.yaml` com:
-
-```yaml
-services:
-  web_api:
-    environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      ConnectionStrings__DefaultConnection: ${CONNECTION_STRING}
-      Jwt__Secret: chave-somente-para-desenvolvimento-local-0123456789
-      DemoData__Habilitado: "true"
-```
-
-Esse arquivo complementa o `compose.yaml` e é carregado automaticamente pelo Docker Compose.
+Antes de iniciar os containers, confirme que o `.env` foi criado a partir do `.env.example` e que os valores locais foram preenchidos.
 
 Após preparar o `.env` e aplicar as migrations conforme a seção anterior, execute:
 
@@ -359,14 +352,9 @@ A API utiliza JWT Bearer.
 
 Na primeira inicialização com o banco preparado, o seed tenta criar um administrador, desde que ainda não exista um usuário com esse perfil.
 
-Credenciais padrão para demonstração local:
+Para a demonstração local, o usuário administrador padrão é `admin`. A senha é o valor configurado localmente em `AdminSeed__Senha` no arquivo `.env`.
 
-| Campo | Valor |
-| --- | --- |
-| Usuário | `admin` |
-| Senha | `Admin@123` |
-
-Essas credenciais e a chave JWT de desenvolvimento não devem ser utilizadas em produção.
+A senha do administrador e a chave JWT são configurações locais e não devem ser versionadas no repositório.
 
 ### Obter o token
 
@@ -375,7 +363,7 @@ Execute `POST /Auth/login` com:
 ```json
 {
   "userName": "admin",
-  "senha": "Admin@123"
+  "senha": "<valor configurado em AdminSeed__Senha>"
 }
 ```
 

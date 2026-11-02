@@ -1,3 +1,4 @@
+using dotenv.net;
 using Microsoft.OpenApi.Models;
 using OpenTelemetry.Metrics;
 using Oficina.Api.Extensions;
@@ -5,6 +6,8 @@ using Oficina.Application.Extensions;
 using Oficina.Infrastructure.Extensions;
 using Oficina.Infrastructure.Security;
 using Oficina.Infrastructure.Seed;
+
+DotEnv.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 

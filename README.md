@@ -1,5 +1,24 @@
 # Oficina Mecânica — Tech Challenge Fase 1
 
+## Grupo 23
+  Lucas Araujo de Souza
+  RM 378314
+  Discord: lucasarsza
+
+  Vander Lima De Assis 
+  RM 378155
+  Discord  vanderv8
+
+  Henrique Vilela Avelar
+  RM 377413
+  Discord: henriquevavelar
+
+  Rodolfo Nei Monteiro da Maia
+  RM 377553
+  Discord dorfs_
+
+## Link vídeo: https://www.youtube.com/watch?v=uakaU5_mwNA
+
 Back-end de um Sistema Integrado de Atendimento e Execução de Serviços para oficinas mecânicas, desenvolvido para o Tech Challenge da Fase 1 da pós-graduação **SOAT — Software Architecture**, da FIAP.
 
 O projeto utiliza **C# e ASP.NET Core**, com arquitetura monolítica em camadas, modelagem orientada ao domínio com **Domain-Driven Design (DDD)** e persistência em **PostgreSQL**.
@@ -121,9 +140,9 @@ Documentação:
 | --- | --- |
 | C# / .NET 10 | Desenvolvimento da aplicação |
 | ASP.NET Core | API REST |
-| Entity Framework Core 10 | Persistência e migrations |
+| Entity Framework Core | Persistência e migrations |
 | Npgsql | Integração com PostgreSQL |
-| PostgreSQL 16 | Banco de dados relacional |
+| PostgreSQL | Banco de dados relacional |
 | JWT Bearer | Autenticação |
 | ASP.NET Core Identity PasswordHasher | Hash e verificação de senhas |
 | AutoMapper | Mapeamento de objetos |
@@ -162,7 +181,7 @@ O esquema do banco é versionado pelas migrations em `src/Oficina.Infrastructure
 | `docs/ddd/` | Documentação DDD e diagramas exportados |
 | `docs/architecture/` | Arquitetura, ADR e diagramas C4 |
 | `docs/requirements/` | Requisitos |
-| `docs/security/` | Análise de vulnerabilidades com Sonarqube |
+| `docs/security/` | Análise de vulnerabilidades com Sonarqube e cobertura de testes automatizados |
 | `.github/workflows/ci.yml` | Pipeline de build e testes |
 | `Oficina.sln` | Solução .NET |
 | `global.json` | Configuração do SDK |
@@ -554,9 +573,7 @@ dotnet test Oficina.sln --configuration Release --collect:"XPlat Code Coverage" 
 
 Os arquivos `coverage.cobertura.xml` são gerados em subdiretórios de `TestResults`.
 
-A exigência da Fase 1 é cobertura mínima de **80% nos domínios críticos**. A existência do coletor não comprova esse percentual: o resultado deve ser medido e apresentado como evidência da entrega.
-
-Os testes de integração entram na mesma coleta de cobertura, pois fazem parte da solução.
+Prints dos testes automatizados obedecendo as mínimo de cobertura de 80% se encontram na pasta [docs/security]
 
 ## Integração contínua
 
@@ -588,37 +605,7 @@ A configuração atual não publica relatório de cobertura nem aplica uma barre
 
 ### Segurança
 
-O diretório [docs/security](docs/security/) possui os resultados da análise de vulnerabilidades usando Sonarqube.
-
-## Entrega da Fase 1
-
-- **Curso:** SOAT — Software Architecture.
-- **Fase:** 1.
-- **Grupo:** a preencher.
-- **Integrantes, RMs e usernames do Discord:** a preencher.
-- **Vídeo público no YouTube:** link a incluir.
-- **Branch da entrega:** a definir.
-- **Hash do commit da entrega:** a definir.
-
-Para identificar o commit selecionado:
-
-```bash
-git rev-parse HEAD
-```
-
-O PDF de entrega deve informar a branch e o hash exatos, com links para o repositório, a documentação e o vídeo correspondentes à mesma versão.
-
-### Pendências de evidências e preparação da entrega
-
-- Publicar o link do vídeo, com duração máxima de 15 minutos.
-- Preencher a identificação do grupo e dos integrantes.
-- Substituir o marcador do link público de modelagem.
-- Apresentar a execução dos testes de integração no vídeo.
-- Medir e comprovar cobertura mínima de 80% nos domínios críticos.
-- Validar a execução a partir de um clone e de um banco novos.
-- Confirmar que o repositório estará público durante a correção.
-- Confirmar a proteção da `main` e a entrada de alterações por Pull Request.
-- Registrar a versão final no PDF de entrega.
+O diretório [docs/security](docs/security/) possui os resultados da análise de vulnerabilidades usando Sonarqube e a cobertura dos testes automatizados.
 
 ## Contexto acadêmico
 

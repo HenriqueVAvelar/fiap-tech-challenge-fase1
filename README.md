@@ -162,7 +162,7 @@ O esquema do banco é versionado pelas migrations em `src/Oficina.Infrastructure
 | `docs/ddd/` | Documentação DDD e diagramas exportados |
 | `docs/architecture/` | Arquitetura, ADR e diagramas C4 |
 | `docs/requirements/` | Requisitos |
-| `docs/security/` | Diretório reservado para evidências de segurança |
+| `docs/security/` | Análise de vulnerabilidades com Sonarqube |
 | `.github/workflows/ci.yml` | Pipeline de build e testes |
 | `Oficina.sln` | Solução .NET |
 | `global.json` | Configuração do SDK |
@@ -588,9 +588,7 @@ A configuração atual não publica relatório de cobertura nem aplica uma barre
 
 ### Segurança
 
-O diretório [docs/security](docs/security/) está reservado para documentação e evidências de segurança.
-
-**Relatório de análise de vulnerabilidades:** pendente de inclusão.
+O diretório [docs/security](docs/security/) possui os resultados da análise de vulnerabilidades usando Sonarqube.
 
 ## Entrega da Fase 1
 
@@ -617,8 +615,6 @@ O PDF de entrega deve informar a branch e o hash exatos, com links para o reposi
 - Substituir o marcador do link público de modelagem.
 - Apresentar a execução dos testes de integração no vídeo.
 - Medir e comprovar cobertura mínima de 80% nos domínios críticos.
-- Incluir o resultado da análise de vulnerabilidades.
-- Consolidar a configuração do Docker para execução completa.
 - Validar a execução a partir de um clone e de um banco novos.
 - Confirmar que o repositório estará público durante a correção.
 - Confirmar a proteção da `main` e a entrada de alterações por Pull Request.

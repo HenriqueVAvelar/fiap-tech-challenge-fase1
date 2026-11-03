@@ -1,0 +1,23 @@
+﻿D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Application.UnitTests\Auth\AuthServiceTests.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Application.UnitTests\Cadastro\CadastroProfilesTests.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Application.UnitTests\Cadastro\CatalogoServiceTests.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Application.UnitTests\Cadastro\ClienteServiceTests.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Application.UnitTests\Cadastro\EstoqueServiceTests.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Application.UnitTests\Cadastro\ServicoServiceTests.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Application.UnitTests\Cadastro\VeiculoServiceTests.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Application.UnitTests\Catalogo\CatalogoProfileTests.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Application.UnitTests\Fakes\CadastroFakes.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Application.UnitTests\Indicadores\TempoMedioExecucaoServiceTests.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Application.UnitTests\OrdemServico\OrdemServicoEstoqueTests.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Application.UnitTests\OrdemServico\OrdemServicoPorDocumentoTests.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Application.UnitTests\UnitTest1.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Application.UnitTests\Usuario\UsuarioServiceTests.cs
+C:\Users\rodol\.nuget\packages\microsoft.net.test.sdk\17.8.0\build\netcoreapp3.1\Microsoft.NET.Test.Sdk.Program.cs
+C:\Users\rodol\.nuget\packages\microsoft.testplatform.testhost\17.8.0\build\netcoreapp3.1\x64\testhost.exe
+C:\Users\rodol\.nuget\packages\microsoft.testplatform.testhost\17.8.0\build\netcoreapp3.1\x64\testhost.dll
+C:\Users\rodol\.nuget\packages\xunit.runner.visualstudio\2.5.3\build\net6.0\xunit.runner.visualstudio.dotnetcore.testadapter.dll
+C:\Users\rodol\.nuget\packages\xunit.runner.visualstudio\2.5.3\build\net6.0\xunit.runner.reporters.netcoreapp10.dll
+C:\Users\rodol\.nuget\packages\xunit.runner.visualstudio\2.5.3\build\net6.0\xunit.runner.utility.netcoreapp10.dll
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Application.UnitTests\Cadastro\.gitkeep
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Application.UnitTests\Estoque\.gitkeep
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Application.UnitTests\OrdemServico\.gitkeep

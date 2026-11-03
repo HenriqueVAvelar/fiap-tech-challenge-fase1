@@ -1,0 +1,19 @@
+﻿D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Domain.UnitTests\Entities\CatalogoTests.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Domain.UnitTests\Entities\ClienteTests.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Domain.UnitTests\Entities\EstoqueTests.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Domain.UnitTests\Entities\OrdemServicoConsumoTests.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Domain.UnitTests\Entities\UsuarioTests.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Domain.UnitTests\Entities\VeiculoTests.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Domain.UnitTests\OrdemServico\OrdemServicoTests.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Domain.UnitTests\UnitTest1.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Domain.UnitTests\ValueObjects\DocumentoTests.cs
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Domain.UnitTests\ValueObjects\PlacaTests.cs
+C:\Users\rodol\.nuget\packages\microsoft.net.test.sdk\17.8.0\build\netcoreapp3.1\Microsoft.NET.Test.Sdk.Program.cs
+C:\Users\rodol\.nuget\packages\microsoft.testplatform.testhost\17.8.0\build\netcoreapp3.1\x64\testhost.exe
+C:\Users\rodol\.nuget\packages\microsoft.testplatform.testhost\17.8.0\build\netcoreapp3.1\x64\testhost.dll
+C:\Users\rodol\.nuget\packages\xunit.runner.visualstudio\2.5.3\build\net6.0\xunit.runner.visualstudio.dotnetcore.testadapter.dll
+C:\Users\rodol\.nuget\packages\xunit.runner.visualstudio\2.5.3\build\net6.0\xunit.runner.reporters.netcoreapp10.dll
+C:\Users\rodol\.nuget\packages\xunit.runner.visualstudio\2.5.3\build\net6.0\xunit.runner.utility.netcoreapp10.dll
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Domain.UnitTests\Cadastro\.gitkeep
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Domain.UnitTests\Catalogo\.gitkeep
+D:\Pós SOAT - FIAP\tech challenge\tests\Oficina.Domain.UnitTests\Estoque\.gitkeep

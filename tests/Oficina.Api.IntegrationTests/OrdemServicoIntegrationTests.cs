@@ -259,7 +259,7 @@ public class OrdemServicoIntegrationTests : IntegrationTestBase
     }
 
     [Fact]
-    public async Task Mecanico_NaoPodeCriarNemEntregarOrdem()
+    public async Task Mecanico_PodeCriarListarEEntregarOrdem()
     {
         var admin = await ClienteAdminAsync();
         var mecanico = await ClienteMecanicoAsync();
@@ -272,12 +272,13 @@ public class OrdemServicoIntegrationTests : IntegrationTestBase
             Documento = cliente.Documento,
             Placa = veiculo.Placa
         });
-        await criacao.DeveTerStatusAsync(HttpStatusCode.Forbidden);
+        await criacao.DeveTerStatusAsync(HttpStatusCode.Created);
+        
+        var entrega = await mecanico.PostAsync($"/OrdensServico/{ordem.Id}/entregar", null);
+        Assert.NotEqual(HttpStatusCode.Forbidden, entrega.StatusCode);
+        Assert.NotEqual(HttpStatusCode.Unauthorized, entrega.StatusCode);
 
-        await (await mecanico.PostAsync($"/OrdensServico/{ordem.Id}/entregar", null))
-            .DeveTerStatusAsync(HttpStatusCode.Forbidden);
-
-        await (await mecanico.GetAsync("/OrdensServico")).DeveTerStatusAsync(HttpStatusCode.Forbidden);
+        await (await mecanico.GetAsync("/OrdensServico")).DeveTerStatusAsync(HttpStatusCode.OK);
     }
 
     [Fact]

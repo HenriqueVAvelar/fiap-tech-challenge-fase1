@@ -21,7 +21,7 @@ public class OrdensServicoController : ApiControllerBase
     }
 
     [HttpGet]
-    [Authorize(Roles = Administrador)]
+    [Authorize(Roles = AdministradorOuMecanico)]
     public async Task<IActionResult> GetAll()
         => Ok(await _service.ObterTodosAsync());
 
@@ -32,7 +32,7 @@ public class OrdensServicoController : ApiControllerBase
         => ExecutarAsync(async () => Ok(await _service.ObterPorDocumentoAsync(documento)));
 
     [HttpPost]
-    [Authorize(Roles = Administrador)]
+    [Authorize(Roles = AdministradorOuMecanico)]
     public Task<IActionResult> Create([FromBody] CriarOrdemServicoInputDto ordem)
         => ExecutarAsync(async () =>
         {
@@ -44,12 +44,12 @@ public class OrdensServicoController : ApiControllerBase
         });
 
     [HttpPost("{id:int}/servicos")]
-    [Authorize(Roles = Administrador)]
+    [Authorize(Roles = AdministradorOuMecanico)]
     public Task<IActionResult> AdicionarServico(int id, [FromBody] AdicionarServicoOrdemInputDto servico)
         => ExecutarAsync(async () => Ok(await _service.AdicionarServicoAsync(id, servico)));
 
     [HttpPost("{id:int}/pecas-insumos")]
-    [Authorize(Roles = Administrador)]
+    [Authorize(Roles = AdministradorOuMecanico)]
     public Task<IActionResult> AdicionarPecaInsumo(int id, [FromBody] AdicionarPecaInsumoOrdemInputDto item)
         => ExecutarAsync(async () => Ok(await _service.AdicionarPecaInsumoAsync(id, item)));
 
@@ -95,7 +95,7 @@ public class OrdensServicoController : ApiControllerBase
         => ExecutarAsync(async () => Ok(await _service.RejeitarOrcamentoAsync(documento, placa)));
 
     [HttpPost("{id:int}/iniciar-execucao")]
-    [Authorize(Roles = Administrador)]
+    [Authorize(Roles = AdministradorOuMecanico)]
     public Task<IActionResult> IniciarExecucao(int id)
         => ExecutarAsync(async () => Ok(await _service.IniciarExecucaoAsync(id)));
 
@@ -105,7 +105,7 @@ public class OrdensServicoController : ApiControllerBase
         => ExecutarAsync(async () => Ok(await _service.FinalizarAsync(id)));
 
     [HttpPost("{id:int}/entregar")]
-    [Authorize(Roles = Administrador)]
+    [Authorize(Roles = AdministradorOuMecanico)]
     public Task<IActionResult> Entregar(int id)
         => ExecutarAsync(async () => Ok(await _service.EntregarAsync(id)));
 }

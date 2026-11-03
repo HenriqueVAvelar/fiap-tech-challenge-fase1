@@ -27,18 +27,25 @@ Os fluxos documentados contemplam:
 - criação e acompanhamento da Ordem de Serviço;
 - gestão de peças, insumos e estoque.
 
+O documento descreve também os atores, a linha do tempo de comandos e
+eventos de cada fluxo, as políticas, os comandos recusados e os pontos
+de atenção.
+
 ### Linguagem Ubíqua
 
 - [Linguagem Ubíqua](linguagem-ubiqua.md)
 
 Define os principais termos utilizados no domínio e seus significados.
+Inclui uma tabela de correspondência entre os termos do domínio e os
+nomes utilizados no código.
 
 ### Regras de Negócio
 
 - [Regras de Negócio](regras-negocio.md)
 
 Registra as regras identificadas durante a descoberta e o refinamento
-do domínio.
+do domínio, incluindo as regras aplicadas na implementação (cadastro,
+Ordem de Serviço, orçamento, estoque e acesso).
 
 ### Decisões de Domínio
 
@@ -51,8 +58,9 @@ originais não determinavam completamente o comportamento esperado.
 
 - [Context Map](context-map.md)
 
-Documenta os Bounded Contexts identificados e os relacionamentos
-existentes entre eles.
+Documenta os Bounded Contexts identificados, o tipo de subdomínio de
+cada um e os relacionamentos existentes entre eles, com diagrama e
+observações sobre a implementação.
 
 ### Diagramas DDD
 
@@ -69,12 +77,29 @@ Foram identificados os seguintes Bounded Contexts:
 - Cadastro;
 - Catálogo;
 - Ordem de Serviço;
-- Estoque.
+- Estoque;
+- Identidade e Acesso.
 
 O contexto de Ordem de Serviço foi classificado como Core Domain.
 
 Cadastro, Catálogo e Estoque foram classificados como Supporting
 Subdomains.
+
+Identidade e Acesso foi classificado como Generic Subdomain.
+
+O cálculo do tempo médio de execução não é um Bounded Context próprio:
+é uma consulta de leitura sobre a Ordem de Serviço.
+
+### Correspondência com o código
+
+| Contexto | Entidades | Serviços | Controllers |
+|---|---|---|---|
+| Cadastro | `Cliente`, `Veiculo` | `ClienteService`, `VeiculoService` | `ClientesController`, `VeiculosController` |
+| Catálogo | `Catalogo`, `Servico` | `CatalogoService`, `ServicoService` | `CatalogoController`, `ServicosController` |
+| Ordem de Serviço | `OrdemServico`, `ItemServico`, `ItemPecaInsumo`, `Orcamento` | `OrdemServicoService` | `OrdensServicoController` |
+| Estoque | `Estoque` | `EstoqueService` | `EstoquesController` |
+| Identidade e Acesso | `Usuario` | `AuthService`, `UsuarioService` | `AuthController`, `UsuariosController` |
+| Indicadores (leitura) | n/a | `TempoMedioExecucaoService` | `IndicadoresController` |
 
 ## Implementação
 

@@ -162,7 +162,7 @@ O esquema do banco é versionado pelas migrations em `src/Oficina.Infrastructure
 | `docs/ddd/` | Documentação DDD e diagramas exportados |
 | `docs/architecture/` | Arquitetura, ADR e diagramas C4 |
 | `docs/requirements/` | Requisitos |
-| `docs/security/` | Diretório reservado para evidências de segurança |
+| `docs/security/` | Análise de vulnerabilidades com Sonarqube |
 | `.github/workflows/ci.yml` | Pipeline de build e testes |
 | `Oficina.sln` | Solução .NET |
 | `global.json` | Configuração do SDK |
@@ -588,7 +588,7 @@ A configuração atual não publica relatório de cobertura nem aplica uma barre
 
 ### Segurança
 
-O diretório [docs/security](docs/security/) está reservado para documentação e evidências de segurança.
+O diretório [docs/security](docs/security/) possui os resultados da análise de vulnerabilidades usando Sonarqube.
 
 ## Entrega da Fase 1
 
